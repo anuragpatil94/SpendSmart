@@ -1,0 +1,47 @@
+{
+  "name": "spend-smart",
+  "description": "SpendSmart Application",
+  "main": "app.js",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "contributors": [
+    {
+      "name": "Puneet Sharma",
+      "email": "psharm8@stevens.edu"
+    },
+    {
+      "name": "Sindhu Barathan",
+      "email": "sbaratha@stevens.edu"
+    },
+    {
+      "name": "Weijing Zeng",
+      "email": "wzeng7@stevens.edu"
+    },
+    {
+      "name": "Anurag Patil",
+      "email": "apatil11@stevens.edu"
+    },
+    {
+      "name": "Yesha Dave",
+      "email": "ydave1@stevens.edu"
+    },
+    {
+      "name": "Raylisa Vaz",
+      "email": "rvaz@stevens.edu"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.0",
+    "express": "^4.15.2",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.2",
+    "express-handlebars": "^3.0.0",
+    "mongodb": "^2.2.24",
+    "node-uuid": "^1.4.7"
+  }
+}
