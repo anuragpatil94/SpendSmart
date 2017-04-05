@@ -57,3 +57,6 @@ p {
   border-bottom: 1px dashed #333;
 }
 
+.table-wide {
+    width: 100%;
+}
