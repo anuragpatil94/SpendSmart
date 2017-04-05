@@ -4,12 +4,12 @@ const constructorMethod = (app) => {
     app.use("/users", usersRoutes);
 
     app.use("/", (req, res) => {
-        res.render("layouts/index", {title: "Spend Smart"});
+        res.render("users/login", {title: "Spend Smart"});
     });
 
     app.use("*",
         (req, res) => {
-            res.redirect("/");
+            res.redirect("users/login");
         });
 };
 
