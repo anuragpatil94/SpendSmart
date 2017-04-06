@@ -8,7 +8,7 @@ let userDetails= {
     id :"yesha111",
     email : "yesha11@gmail.com",
    password : "webProgrammin"
-}
+};
 ///*
 //Create the user
 let getUser = users.addUser(userDetails);
