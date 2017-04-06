@@ -14,10 +14,12 @@ let getCollectionFn = (collection) => {
 
         return col;
     }
-}
+};
 
 /* Now, you can list your collections here: */
 module.exports = {
-    users: getCollectionFn("users")
+    users: getCollectionFn("users"),
+    transactions: getCollectionFn("transactions"),
+    budget:getCollectionFn("budget")
 };
 

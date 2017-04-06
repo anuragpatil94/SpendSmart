@@ -1,8 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const passport = require('passport');
+const Strategy = require('passport-local').Strategy;
 const app = express();
+const configPassport = require("./data").configPassport;
 const static = express.static(__dirname + '/public');
-
+const flash = require('connect-flash');
 const configRoutes = require("./routes");
 
 const exphbs = require('express-handlebars');
@@ -35,13 +38,22 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
     next();
 };
 
+configPassport(passport);
+app.use(flash());
 app.use("/public", static);
+app.use(require('morgan')('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(require('express-session')({secret: 'keyboard cat', resave: false, saveUninitialized: false}));
 app.use(rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
+
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
 
 configRoutes(app);
 
