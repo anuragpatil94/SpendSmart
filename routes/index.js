@@ -5,7 +5,7 @@ const constructorMethod = (app) => {
     app.use("*", (req, res) => {
         if (!res)  res.sendStatus(404);
         else{
-            res.render("index",{title:"Index Page"})
+            res.render("users/login",{title:"Spend Smart"})
         }
     });
 };
