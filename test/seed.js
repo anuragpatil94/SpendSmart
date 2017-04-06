@@ -1,5 +1,3 @@
-
-
 const connection = require("../config/mongoConnection");
 const users = require("../data/users");
 //const comments= require("../data/comments")

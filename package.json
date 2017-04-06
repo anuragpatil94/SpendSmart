@@ -34,14 +34,25 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.0",
-    "express": "^4.15.2",
-    "express-handlebars": "^3.0.0",
-    "mongodb": "^2.2.24",
-    "morgan": "~1.7.0",
-    "node-uuid": "^1.4.7",
-    "serve-favicon": "~2.3.2"
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "debug": "*",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "handlebars": "*",
+    "mongodb": "*",
+    "morgan": "*",
+    "node-uuid": "*",
+    "serve-favicon": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "bcryptjs": "*",
+    "passport-strategy": "*",
+    "connect-flash": "*",
+    "passport-http": "*"
+
   }
 }

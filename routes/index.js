@@ -2,15 +2,12 @@ const usersRoutes = require("./users");
 
 const constructorMethod = (app) => {
     app.use("/users", usersRoutes);
-
-    app.use("/", (req, res) => {
-        res.render("users/login", {title: "Spend Smart"});
+    app.use("*", (req, res) => {
+        if (!res)  res.sendStatus(404);
+        else{
+            res.render("index",{title:"Index Page"})
+        }
     });
-
-    app.use("*",
-        (req, res) => {
-            res.redirect("users/login");
-        });
 };
 
 module.exports = constructorMethod;
