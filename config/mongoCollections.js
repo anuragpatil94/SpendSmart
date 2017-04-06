@@ -14,7 +14,7 @@ let getCollectionFn = (collection) => {
 
         return col;
     }
-}
+};
 
 /* Now, you can list your collections here: */
 module.exports = {
