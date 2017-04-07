@@ -1,13 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const passport = require('passport');
 const app = express();
 const static = express.static(__dirname + '/public');
-
-const configRoutes = require("./routes");
-
+const flash = require('connect-flash');
+const config = require("./routes");
 const exphbs = require('express-handlebars');
-
+const favicon=require("serve-favicon");
 const handlebars = require('handlebars');
+const path=require("path");
 
 const handlebarsInstance = exphbs.create({
     defaultLayout: 'main',
@@ -35,15 +36,24 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
     next();
 };
 
+config.configPassport(passport);
+app.use(flash());
 app.use("/public", static);
+app.use(require('morgan')('dev'));
+app.use(favicon(path.join(__dirname, 'public','images', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(require('express-session')({secret: 'keyboard cat'}));
 app.use(rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
-configRoutes(app);
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
+config.configRoutes(app);
 
 app.listen(3000, () => {
     console.log("We've now got a server!");
