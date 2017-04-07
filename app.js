@@ -1,14 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require('passport');
-const Strategy = require('passport-local').Strategy;
 const app = express();
 const static = express.static(__dirname + '/public');
 const flash = require('connect-flash');
 const config = require("./routes");
 const exphbs = require('express-handlebars');
-
+const favicon=require("serve-favicon");
 const handlebars = require('handlebars');
+const path=require("path");
 
 const handlebarsInstance = exphbs.create({
     defaultLayout: 'main',
@@ -40,6 +40,7 @@ config.configPassport(passport);
 app.use(flash());
 app.use("/public", static);
 app.use(require('morgan')('dev'));
+app.use(favicon(path.join(__dirname, 'public','images', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require('express-session')({secret: 'keyboard cat'}));
