@@ -3,11 +3,9 @@ const bodyParser = require("body-parser");
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const app = express();
-const configPassport = require("./data").configPassport;
 const static = express.static(__dirname + '/public');
 const flash = require('connect-flash');
-const configRoutes = require("./routes");
-
+const config = require("./routes");
 const exphbs = require('express-handlebars');
 
 const handlebars = require('handlebars');
@@ -38,13 +36,13 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
     next();
 };
 
-configPassport(passport);
+config.configPassport(passport);
 app.use(flash());
 app.use("/public", static);
-app.use(require('morgan')('combined'));
+app.use(require('morgan')('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(require('express-session')({secret: 'keyboard cat', resave: false, saveUninitialized: false}));
+app.use(require('express-session')({secret: 'keyboard cat'}));
 app.use(rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', handlebarsInstance.engine);
@@ -54,8 +52,7 @@ app.set('view engine', 'handlebars');
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
-
-configRoutes(app);
+config.configRoutes(app);
 
 app.listen(3000, () => {
     console.log("We've now got a server!");
