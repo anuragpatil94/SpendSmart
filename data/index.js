@@ -1,5 +1,7 @@
 const userData = require("./users");
 
 module.exports = {
-    users: userData
+    users: userData,
+    bills : billsData,
+    budget : budgetData
 };
