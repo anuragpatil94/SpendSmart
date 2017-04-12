@@ -14,7 +14,7 @@ users.getAllUsers().then(user => {
         // users.removeUser(u._id).then(()=>{
         //     console.log(`removed user ${u._id}`);
         // });
-    })
+    });
 });
 //Create the user
 // let getUser = users.addUser(userDetails);
