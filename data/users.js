@@ -1,33 +1,16 @@
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
-const ObjectId = require('mongodb').ObjectId;
-
 let exportedMethods = {
-    getAllUsers() {
-        return users().then((userCollection) => {
-            return userCollection.find({}).toArray();
-        });
-    },
+
     // This is a fun new syntax that was brought forth in ES6, where we can define
     // methods on an object with this shorthand!
     getUserById(id) {
-        if (typeof id === "string") {
-            id = ObjectId(id);
-        }
         return users().then((userCollection) => {
             return userCollection.findOne({_id: id}).then((user) => {
                 if (!user) throw "User not found";
+
                 return user;
             });
-        });
-    },
-    getUserByUsername(username) {
-        return users().then((userCollection) => {
-            return userCollection.findOne({username: username})
-                .then((user) => {
-                    if (!user) throw "User not found";
-                    return user;
-                });
         });
     },
     getAllUsers(){
@@ -35,15 +18,16 @@ let exportedMethods = {
             return userCollection.find({}).toArray();
         }, (err) => {
             return Promise.reject("Error occurred while fetching all the users");
-        })
+        });
     },
     addUser(UserDetails) {
         return users().then((userCollection) => {
             let newUser = {
                 _id: UserDetails.id,
-                username: UserDetails.username,
+                username: UserDetails.id,
                 email: UserDetails.email,
-                hashedPassword: UserDetails.hashedPassword
+                password: UserDetails.hashedPassword,
+                categories: [],
             };
 
             return userCollection.insertOne(newUser).then((newInsertInformation) => {
@@ -60,16 +44,18 @@ let exportedMethods = {
                     throw (`Could not delete user with id of ${id}`);
                 else
                     return (`Deleted user ${id} successfully`);
-
             });
         });
     },
+
     updateUser(id, UpdatedInfo) {
         return users().then((userCollection) => {
             return this.getUserById(id).then((currentUser) => {
                 let updatedUser = {
+                    username: UpdatedInfo.username,
                     email: UpdatedInfo.email,
-                    hashedPassword: UpdatedInfo.hashedPassword
+                    hashedPassword: UpdatedInfo.hashedPassword,
+                    categories: UpdatedInfo.categories
                 };
 
                 let updateCommand = {
@@ -80,8 +66,8 @@ let exportedMethods = {
                     return this.getUserById(id);
                 });
             });
-        })
-    },
+        });
+    }
 };
 
 module.exports = exportedMethods;
