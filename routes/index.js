@@ -2,10 +2,18 @@ const users = require("../data/users");
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcrypt-nodejs");
-
+const txRoutes = require("./transactions");
 let exportedMethods = {
     configRoutes(app){
-        app.use("/index", (req, res) => {
+        app.use("*", (req, res, next) => {
+            if (!req.isAuthenticated()) {
+                res.redirect("/login");
+                return;
+            }
+            next();
+        });
+        app.use("/bill", txRoutes);
+        app.get("/index", (req, res) => {
             if (!req.isAuthenticated()) {
                 res.redirect("/login");
                 return;
