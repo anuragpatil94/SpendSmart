@@ -10,7 +10,8 @@ router.post("/", (req, res) => {
         note: req.body.note,
         participants: req.body.participants
     };
-    bills.addBill(tx).then(b => {
+    bills.addBill(req.body.category, req.body.amount, Date.now(), req.body.note, req.body.user.username)
+        .then(b => {
         res.sendStatus(201);
     }, e => {
         res.status(500).json({error: e})
@@ -18,7 +19,7 @@ router.post("/", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-    bills.getBill(req.body.tx_id)
+    bills.getBillById(req.body.tx_id)
         .then(b => {
             res.json(b);
         }, e => {

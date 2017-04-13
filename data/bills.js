@@ -1,5 +1,5 @@
 const mongoCollections = require("../config/mongoCollections");
-const bills = mongoCollections.bills;
+const bill = mongoCollections.transactions;
 const users = require("./users");
 const uuid = require('node-uuid');
 
