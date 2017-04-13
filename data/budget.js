@@ -4,6 +4,12 @@ const users = require("./users");
 const uuid = require('node-uuid');
 
 let exportedMethods = {
+    
+    getAllBudget() {
+        return budget().then((budgetCollection) => {
+            return budgetCollection.find({}).toArray();
+        });
+    },
 
     getBudgetById(id) {
         return budget().then((budgetCollection) => {
