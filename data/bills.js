@@ -16,7 +16,7 @@ let exportedMethods = {
             return billCollection
                 .findOne({_id: id})
                 .then((bill) => {
-                    if (!bill) 
+                    if (!bill)
                         throw "Bill not found";
                     return bill;
                 });
@@ -39,7 +39,7 @@ let exportedMethods = {
         });
     },
 
-     getBillByCategory(category) {
+    getBillByCategory(category) {
         return bill().then((billCollection) => {
             return billCollection
                 .find({"category":  category})
@@ -49,9 +49,9 @@ let exportedMethods = {
 
     //category and date could get from select on webpage
     addBill(category, amount, date, note, userID ) {
-        if (typeof amount !== "number") 
+        if (typeof amount !== "number")
             return Promise.reject("Must provide a number");
-        
+
         return bill().then((billCollection) => {
             return users
                 .getUserById(userID)
