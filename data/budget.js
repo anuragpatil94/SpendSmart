@@ -1,122 +1,122 @@
 const mongoCollections = require("../config/mongoCollections");
-const budget = mongoCollections.budget;
-const users = require("./users");
-const uuid = require('node-uuid');
+ const budget = mongoCollections.budget;
+ const users = require("./users");
+ const uuid = require('node-uuid');
 
-let exportedMethods = {
-    
-    getAllBudget() {
-        return budget().then((budgetCollection) => {
-            return budgetCollection.find({}).toArray();
-        });
-    },
+ let exportedMethods = {
 
-    getBudgetById(id) {
-        return budget().then((budgetCollection) => {
-            return budgetCollection
-                .findOne({_id: id})
-                .then((budget) => {
-                    if (!budget) 
-                        throw "Budget not found";
-                    return budget;
-                });
-        });
-    },
+ getAllBudget() {
+ return budget().then((budgetCollection) => {
+ return budgetCollection.find({}).toArray();
+ });
+ },
 
-    getBudgetByUserId(id) {
-        return budget().then((budgetCollection) => {
-            return budgetCollection
-                .find({"userId":  id})
-                .toArray();
-        });
-    },
+ getBudgetById(id) {
+ return budget().then((budgetCollection) => {
+ return budgetCollection
+ .findOne({_id: id})
+ .then((budget) => {
+ if (!budget)
+ throw "Budget not found";
+ return budget;
+ });
+ });
+ },
 
-    getBudgetByDate(date) {
-        return budget().then((budgetCollection) => {
-            return budgetCollection
-                .find({"date":  date});
-        });
-    },
+ getBudgetByUserId(id) {
+ return budget().then((budgetCollection) => {
+ return budgetCollection
+ .find({"userId":  id})
+ .toArray();
+ });
+ },
 
-     getBudgetByCategory(category) {
-        return budget().then((budgetCollection) => {
-            return budgetCollection
-                .find({"category":  category})
-                .toArray();
-        });
-    },
+ getBudgetByDate(date) {
+ return budget().then((budgetCollection) => {
+ return budgetCollection
+ .find({"date":  date});
+ });
+ },
 
-    //category and date could get from select on webpage
-    addBudget(category, amount, date, userID ) {
-        if (typeof amount !== "number") 
-            return Promise.reject("Must provide a number");
-        
-        return budget().then((budgetCollection) => {
-            return users
-                .getUserById(userID)
-                .then((budgetOfUser) => {
-                    let newBudget = {
-                        _id: uuid.v4(),
-                        user: {
-                            userId: userID,
-                            userName: budgetOfUser.email
-                        },
-                        category: category,
-                        amount: amount,
-                        date: date
-                    };
+ getBudgetByCategory(category) {
+ return budget().then((budgetCollection) => {
+ return budgetCollection
+ .find({"category":  category})
+ .toArray();
+ });
+ },
 
-                    return budgetCollection
-                        .insertOne(newBudget)
-                        .then((newInsertInformation) => {
-                            return newInsertInformation.insertedId;
-                        })
-                        .then((newId) => {
-                            return this.getBudgetById(newId);
-                        });
-                });
-        });
-    },
+ //category and date could get from select on webpage
+ addBudget(category, amount, date, userID ) {
+ if (typeof amount !== "number")
+ return Promise.reject("Must provide a number");
 
-    removeBudget(id) {
-        return budget().then((budgetCollection) => {
-            return budgetCollection
-                .removeOne({_id: id})
-                .then((deletionInfo) => {
-                    if (deletionInfo.deletedCount === 0) {
-                        throw(`Could not delete budget with id of ${id}`)
-                    } else {}
-                });
-        });
-    },
+ return budget().then((budgetCollection) => {
+ return users
+ .getUserById(userID)
+ .then((budgetOfUser) => {
+ let newBudget = {
+ _id: uuid.v4(),
+ user: {
+ userId: userID,
+ userName: budgetOfUser.email
+ },
+ category: category,
+ amount: amount,
+ date: date
+ };
 
-    updateBudget(id, updatedBudget) {
-        return budget().then((budgetCollection) => {
-            let updatedBudgetData = {};
+ return budgetCollection
+ .insertOne(newBudget)
+ .then((newInsertInformation) => {
+ return newInsertInformation.insertedId;
+ })
+ .then((newId) => {
+ return this.getBudgetById(newId);
+ });
+ });
+ });
+ },
 
-            if (updatedBudget.category) {
-                updatedBudgetData.category = updatedBudget.category;
-            }
+ removeBudget(id) {
+ return budget().then((budgetCollection) => {
+ return budgetCollection
+ .removeOne({_id: id})
+ .then((deletionInfo) => {
+ if (deletionInfo.deletedCount === 0) {
+ throw(`Could not delete budget with id of ${id}`)
+ } else {}
+ });
+ });
+ },
 
-            if (updatedBudget.amount) {
-                updatedBudgetData.amount = updatedBudget.amount;
-            }
+ updateBudget(id, updatedBudget) {
+ return budget().then((budgetCollection) => {
+ let updatedBudgetData = {};
 
-            if (updatedBudget.date) {
-                updatedBudgetData.date = updatedBudget.date;
-            }
+ if (updatedBudget.category) {
+ updatedBudgetData.category = updatedBudget.category;
+ }
 
-            let updateCommand = {
-                $set: updatedBudgetData
-            };
+ if (updatedBudget.amount) {
+ updatedBudgetData.amount = updatedBudget.amount;
+ }
 
-            return budgetCollection.updateOne({
-                _id: id
-            }, updateCommand).then((result) => {
-                return this.getBudgetById(id);
-            });
-        });
-    }
-};
+ if (updatedBudget.date) {
+ updatedBudgetData.date = updatedBudget.date;
+ }
 
-module.exports = exportedMethods;
+ let updateCommand = {
+ $set: updatedBudgetData
+ };
+
+ return budgetCollection.updateOne({
+ _id: id
+ }, updateCommand).then((result) => {
+ return this.getBudgetById(id);
+ });
+ });
+ }
+ };
+
+ module.exports = exportedMethods;

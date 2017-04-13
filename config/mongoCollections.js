@@ -20,6 +20,7 @@ let getCollectionFn = (collection) => {
 module.exports = {
     users: getCollectionFn("users"),
     transactions: getCollectionFn("transactions"),
-    budget:getCollectionFn("budget")
+    budget:getCollectionFn("budget"),
+
 };
 
