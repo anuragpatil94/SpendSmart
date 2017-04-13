@@ -1,16 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const bills = require("../data/bills");
+const bills = require("../data").bills;
 
 router.post("/", (req, res) => {
-    let tx = {
-        user: req.body.user,
-        category: req.body.category,
-        amount: req.body.amount,
-        note: req.body.note,
-        participants: req.body.participants
-    };
-    bills.addBill(req.body.category, req.body.amount, Date.now(), req.body.note, req.body.user.username)
+    bills.addBill(req.body.category, req.body.amount, req.body.date, req.body.note, req.body.user.username)
         .then(b => {
         res.sendStatus(201);
     }, e => {
@@ -19,7 +12,7 @@ router.post("/", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-    bills.getBillById(req.body.tx_id)
+    bills.getBillByUserId(req.body.user.username)
         .then(b => {
             res.json(b);
         }, e => {
@@ -31,8 +24,7 @@ router.post("/update", (req, res) => {
         user: req.body.user,
         category: req.body.category,
         amount: req.body.amount,
-        note: req.body.note,
-        participants: req.body.participants
+        note: req.body.note
     };
     bills.updateBill(req.body.tx_id, tx).then(b => {
         res.sendStatus(201);

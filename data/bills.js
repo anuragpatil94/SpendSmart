@@ -26,29 +26,32 @@ let exportedMethods = {
     getBillByUserId(id) {
         return bill().then((billCollection) => {
             return billCollection
-                .find({"userId":  id})
+                .find({"user.userId": id})
                 .toArray();
         });
     },
 
-    getBillByDate(date) {
+    getBillByMonth(userId, month, year) {
         return bill().then((billCollection) => {
             return billCollection
-                .find({"date":  date})
+                .find({"user.userId": userId, "date.month": month, "date.year": year})
                 .toArray();
         });
     },
 
-    getBillByCategory(category) {
+    getBillByCategory(userId, category) {
         return bill().then((billCollection) => {
             return billCollection
-                .find({"category":  category})
+                .find({
+                    "user.userId": userId,
+                    "category": category
+                })
                 .toArray();
         });
     },
 
     //category and date could get from select on webpage
-    addBill(category, amount, date, note, userID ) {
+    addBill(category, amount, date, note, userID) {
         if (typeof amount !== "number")
             return Promise.reject("Must provide a number");
 
@@ -64,8 +67,12 @@ let exportedMethods = {
                         },
                         category: category,
                         amount: amount,
-                        date: date,
-                        note: note
+                        note: note,
+                        date: {
+                            date: date.getDate(),
+                            month: date.getMonth(),
+                            year: date.getFullYear()
+                        }
                     };
 
                     return billCollection
@@ -87,7 +94,8 @@ let exportedMethods = {
                 .then((deletionInfo) => {
                     if (deletionInfo.deletedCount === 0) {
                         throw(`Could not delete bill with id of ${id}`)
-                    } else {}
+                    } else {
+                    }
                 });
         });
     },
@@ -123,6 +131,6 @@ let exportedMethods = {
             });
         });
     }
-}
+};
 
 module.exports = exportedMethods;

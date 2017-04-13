@@ -1,32 +1,21 @@
 const connection = require("../config/mongoConnection");
 const users = require("../data/users");
 const bcrypt = require("bcrypt-nodejs");
-const categories=require("../data/categories")
-const transactions= require("../data/transaction");
-let username="yesha2";
-let categoryDetails={
-    name: "myfood1"
-}
-let categoryName=categoryDetails.name;
-let transactionDetails ={
-    category: "myfood1",
-    amount : "30",
-    date :"4/12/2017",
-    note: "tea",
-    month : "April"
-}
-let userDetails= {};
-    userDetails.id =username,
-    userDetails.username =username,
-    userDetails.email = "yesha11@gmail.com",
-    userDetails.hashedPassword = bcrypt.hashSync("1234");
-let updatedInfo= {
-    categoty : "myfood1",
-    amount: "50",
-    note: "frappe",
-    date: "5/12/2017",
-    month: "May"
-}
+const transactions = require("../data/bills");
+
+
+transactions.getBillByUserId("psharm8")
+    .then(b => {
+        console.log(JSON.stringify(b, null, 4));
+    }).then(() => {
+    return transactions.getBillByCategory("psharm8", "food");
+}).then(b => {
+    console.log(JSON.stringify(b, null, 4));
+}).then(() => {
+    return transactions.getBillByMonth("psharm8", 2, 2017);
+}).then(b => {
+    console.log(JSON.stringify(b, null, 4));
+});
 // Test Transactions
 
 //CREATE Transaction
