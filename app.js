@@ -6,6 +6,7 @@ const static = express.static(__dirname + '/public');
 const flash = require('connect-flash');
 const config = require("./routes");
 const exphbs = require('express-handlebars');
+const expressValidator = require('express-validator');
 const favicon=require("serve-favicon");
 const handlebars = require('handlebars');
 const path=require("path");
@@ -53,6 +54,27 @@ app.set('view engine', 'handlebars');
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Express Validator
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+        var namespace = param.split('.'),
+            root = namespace.shift(),
+            formParam = root;
+
+        while (namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param: formParam,
+            msg: msg,
+            value: value
+        };
+    }
+}));
+
+
+
 config.configRoutes(app);
 
 app.listen(3000, () => {
