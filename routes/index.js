@@ -30,8 +30,11 @@ let exportedMethods = {
                     let password = req.body.password;
                     let email = req.body.email;
                     let confirm_password = req.body.confirm_password;
-
-
+                    firstName = firstName.toLowerCase();
+                    lastName = lastName.toLowerCase();
+                    username = username.toLowerCase();
+                    email = email.toLowerCase();
+                    req.sanitize('username').trim();
                     req.checkBody('email', 'Email is required').notEmpty();
                     req.checkBody('email', 'Email is not valid').isEmail();
                     req.checkBody('username', 'Username is required').notEmpty();
