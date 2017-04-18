@@ -1,49 +1,164 @@
 <header class="container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Spend Smart</a>
-            </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Dashboard <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Budget</a></li>
-                    <li><a href="#">Expenses</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <form action="/logout" method="POST" id="logout">
-                    </form>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">{{user.username}} <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Profile</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#" id="logout-link">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
-</header>
-<main class="container">
-    <div class="jumbotron">
-        <h1>Coming Soon</h1>
-        <p>This page is going to be awesome. It will contain list of expenses, shares, charts and much more.</p>
-        <p>Stay Tuned!</p>
-        <p><a class="btn btn-primary btn-lg" target="_blank" href="https://github.com/psharm8/SpendSmart" role="button">GitHub</a>
-        </p>
+    <div class="w3-container">
+    
+        <div class="w3-dropdown-hover">
+            <button style="font-size:24px">
+                <i class="fa fa-user"></i></button>
+                    <div class="w3-dropdown-content w3-bar-block w3-border">
+                        <a href="#" style="font-size:10px" class="w3-bar-item w3-button">My account</a>
+                        <a href="#" style="font-size:10px" class="w3-bar-item w3-button">Logout</a>
+                    </div>
+            
+        </div>
     </div>
+    
+    <h1>Spend Smart</h1>
+ 
+
+    <button class="w3-display-topright" style="font-size:18px">
+        <i class="fa fa-question-circle"></i>
+    </button>
+    
+</header>
+
+<main class="container">
+    <article>
+     
+        <h2>About SpendSmart</h2>
+
+        <p>An online money management tool to keep track of all the personal as well as group transactions.</p>
+        <p>Manage personal finances with online money management tool designed to keep track of all transactions. Categorize your personal expenses to track your spendings against monthly budget goals.</p>
+
+            <h2>Let's get started</h2>
+                <div class="tooltip">
+                    <button onclick="document.getElementById('id01').style.display='block'" style="font-size:30px" class="fa fa-plus-square">  
+                        <span class="tooltiptext" style="font-size:15px ">Add Transaction</span>
+                    </button>
+                </div>
+                
+                <div class="tooltip">
+                    <button onclick="document.getElementById('id02').style.display='block'" style="font-size:30px" class="fa fa-dashboard">
+                        <span class="tooltiptext" style="font-size:15px ">View Dashboard</span>
+                    </button>
+                </div>
+                
+                <div class="tooltip">
+                    <button  onclick="document.getElementById('id03').style.display='block'" style="font-size:18px"> 
+                        <i class="material-icons">account_balance_wallet</i>
+                        <span class="tooltiptext" style="font-size:15px ">Create Budget</span>
+                    </button>
+                </div>
+				<div class="tooltip">
+				<button onclick="document.getElementById('id04').style.display='block'" style="font-size:30px" class="fa fa-list-ul">
+				<span class="tooltiptext" style="font-size:15px ">Add Category</span>
+				</button>
+				</div>
+
+                <div id="id01" class="w3-modal" style="display: none;">
+                    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:300px">
+                        <div class="w3-center"><br>
+                            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">X</span>
+                            <img src="C:/Users/Raylisa/Desktop/image.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
+                        </div>
+
+                            <form class="w3-container" action="/action_page.php">
+                                <div class="w3-section">
+                                    <div class="w3-container">
+                                        <h2>Add transaction</h2>
+                                        <label><i style="font-size:24px" class="fa fa-question-circle"></i><b>   Select Category</b></label>
+                                        <select class="w3-select" name="option">
+                                            <option value="" disabled="" selected="">Choose your option</option>
+                                            <option value="1">Income</option>
+                                            <option value="2">Bills &amp; Utilities</option>
+                                            <option value="3">Education</option>
+                                            <option value="4">Entertainment</option>
+                                            <option value="5">Family</option>
+                                            <option value="6">Fees &amp; Charges</option>
+                                            <option value="7">Food &amp; Beverage</option>
+                                            <option value="8">Gifts &amp; Donations</option>
+                                            <option value="9">Health &amp; Fitness</option>
+                                            <option value="10">Insurances</option>
+                                            <option value="11">Investment</option>
+                                            <option value="12">Insurances</option>
+                                            <option value="13">Shopping</option>
+                                            <option value="14">Transportation</option>
+                                            <option value="15">Travels</option>
+                                            <option value="16">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <label><b><i style="font-size:24px" class="fa fa-dollar"></i>   How much</b></label>
+                                <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter amount" name="usrname" required="">
+                                <label><b><i style="font-size:24px" class="material-icons">&#xe916;</i> Date</b></label>
+		                        <input class="w3-input w3-border w3-margin-bottom" type="date"  name="usrname" required>
+                                <label><b><i style="font-size:24px" class="fa fa-pencil"></i>   Enter Note</b></label>
+                                <input class="w3-input w3-border" type="password" placeholder="comment" name="psw" required="">
+                            
+                                <label><b><i class="material-icons">group_add</i>  Share with</b></label>
+                                <input class="w3-input w3-border" type="password" placeholder="Share with" name="psw" required="">
+                            
+                                <button class="w3-button w3-block w3-blue w3-section w3-padding" type="submit">Done</button>
+                            </form>
+                        </div>
+                    </div>
+					<div id="id03" class="w3-modal" style="display: none;">
+                    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:300px">
+                        <div class="w3-center"><br>
+                            <span onclick="document.getElementById('id03').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">X</span>
+                            
+                        </div>
+
+                            <form class="w3-container" action="/action_page.php">
+                                <div class="w3-section">
+                                    <div class="w3-container">
+                                        <h2>Add Budget</h2>
+                                        <label><i style="font-size:24px" class="fa fa-question-circle"></i><b>   Select Category</b></label>
+                                        <select class="w3-select" name="option">
+                                            <option value="" disabled="" selected="">Choose your option</option>
+                                            <option value="1">Income</option>
+                                            <option value="2">Bills &amp; Utilities</option>
+                                            <option value="3">Education</option>
+                                            <option value="4">Entertainment</option>
+                                            <option value="5">Family</option>
+                                            <option value="6">Fees &amp; Charges</option>
+                                            <option value="7">Food &amp; Beverage</option>
+                                            <option value="8">Gifts &amp; Donations</option>
+                                            <option value="9">Health &amp; Fitness</option>
+                                            <option value="10">Insurances</option>
+                                            <option value="11">Investment</option>
+                                            <option value="12">Insurances</option>
+                                            <option value="13">Shopping</option>
+                                            <option value="14">Transportation</option>
+                                            <option value="15">Travels</option>
+                                            <option value="16">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <label><b><i style="font-size:24px" class="fa fa-dollar"></i>Budget Amount</b></label>
+                                <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter amount" name="usrname" required="">
+                                <button class="w3-button w3-block w3-blue w3-section w3-padding" type="submit">Done</button>
+								</form>
+								</div>
+								</div>
+								<div id="id04" class="w3-modal" style="display: none;">
+                                <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:300px">
+                                <div class="w3-center"><br>
+                                <span onclick="document.getElementById('id04').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">X</span>
+                            
+                                </div>
+
+                                <form class="w3-container" action="/action_page.php">
+                                <div class="w3-section">
+                                    <div class="w3-container">
+                                        <h2>Add Category</h2>
+										<label><b><i style="font-size:24px" class="fa fa-question-circle"></i>Category</b></label>
+                                <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter category" name="usrname" required="">
+								<button class="w3-button w3-block w3-blue w3-section w3-padding" type="submit">Done</button>
+								</div>
+								</div>
+								</form>
+								</div>
+								</div>
+    </article>
 </main>
-<script src="/public/javascripts/index.js"></script>
