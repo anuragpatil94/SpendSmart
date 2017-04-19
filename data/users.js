@@ -26,6 +26,30 @@ let exportedMethods = {
                 });
         });
     },
+    getUserByEmail(email) {
+        console.log('insideuser: ' + email);
+        return users().then((userCollection) => {
+            return userCollection.findOne({email: email})
+                .then((user) => {
+                    if (!user) throw "User not found";
+                    return user;
+                });
+        });
+    },
+    getUserByToken(resetPasswordToken, resetPasswordExpires) {
+        console.log('inside getToken: ' + resetPasswordToken);
+        console.log('inside getToken: ' + resetPasswordExpires);
+        return users().then((userCollection) => {
+            return userCollection.findOne({
+                resetPasswordToken: resetPasswordToken,
+                resetPasswordExpires: {$gt: resetPasswordExpires}
+            })
+                .then((user) => {
+                    if (!user) throw "User not found";
+                    return user;
+                });
+        });
+    },
     getAllUsers(){
         return users().then((userCollection) => {
             return userCollection.find({}).toArray();
@@ -37,12 +61,13 @@ let exportedMethods = {
         return users().then((userCollection) => {
             let newUser = {
                 _id: UserDetails.id,
-                firstName:UserDetails.firstName,
+                firstName: UserDetails.firstName,
                 lastName: UserDetails.lastName,
                 username: UserDetails.username,
                 email: UserDetails.email,
-                hashedPassword:UserDetails.hashedPassword,
-
+                hashedPassword: UserDetails.hashedPassword,
+                resetPasswordToken,
+                resetPasswordExpires
                 //UserDetails.hashedPassword
             };
 
@@ -67,10 +92,26 @@ let exportedMethods = {
     updateUser(id, UpdatedInfo) {
         return users().then((userCollection) => {
             return this.getUserById(id).then((currentUser) => {
-                let updatedUser = {
-                    email: UpdatedInfo.email,
-                    hashedPassword: UpdatedInfo.hashedPassword
-                };
+
+                let updatedUser = {};
+                if (UpdatedInfo.firstName) {
+                    updatedUser.firstName = UpdatedInfo.firstName;
+                }
+                if (UpdatedInfo.lastName) {
+                    updatedUser.lastName = UpdatedInfo.lastName;
+                }
+                if (UpdatedInfo.email) {
+                    updatedUser.email = UpdatedInfo.email;
+                }
+                if (UpdatedInfo.hashedPassword) {
+                    updatedUser.hashedPassword = UpdatedInfo.hashedPassword;
+                }
+                if (UpdatedInfo.resetPasswordExpires) {
+                    updatedUser.resetPasswordExpires = UpdatedInfo.resetPasswordExpires;
+                }
+                if (UpdatedInfo.resetPasswordToken) {
+                    updatedUser.resetPasswordToken = UpdatedInfo.resetPasswordToken;
+                }
 
                 let updateCommand = {
                     $set: updatedUser
