@@ -1,15 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 const passport = require('passport');
-const app = express();
-const static = express.static(__dirname + '/public');
-const flash = require('connect-flash');
+const flash = require('express-flash');
 const config = require("./routes");
 const exphbs = require('express-handlebars');
+const expressValidator = require('express-validator');
 const favicon=require("serve-favicon");
+const session=require("express-session");
 const handlebars = require('handlebars');
 const path=require("path");
-
+const app = express();
+const static = express.static(__dirname + '/public');
 const handlebarsInstance = exphbs.create({
     defaultLayout: 'main',
     // Specify helpers which are only registered on this instance.
@@ -31,28 +33,50 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
         req.method = req.body._method;
         delete req.body._method;
     }
-
     // let the next middleware run:
     next();
 };
 
 config.configPassport(passport);
-app.use(flash());
+
 app.use("/public", static);
-app.use(require('morgan')('dev'));
+app.set('view engine', 'handlebars');
 app.use(favicon(path.join(__dirname, 'public','images', 'favicon.ico')));
+app.use(require('morgan')('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(require('express-session')({secret: 'keyboard cat'}));
+app.use(cookieParser());
+app.use(session({secret: 'keyboard cat'}));
 app.use(rewriteUnsupportedBrowserMethods);
-
+app.use(flash());
 app.engine('handlebars', handlebarsInstance.engine);
-app.set('view engine', 'handlebars');
+
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session({}));
+
+//Express Validator
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+        let namespace = param.split('.'),
+            root = namespace.shift(),
+            formParam = root;
+
+        while (namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param: formParam,
+            msg: msg,
+            value: value
+        };
+    }
+}));
+
+
+
 config.configRoutes(app);
 
 app.listen(3000, () => {

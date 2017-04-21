@@ -1,5 +1,5 @@
 const mongoCollections = require("../config/mongoCollections");
-const bill = mongoCollections.transactions;
+const bills = mongoCollections.bills;
 const users = require("./users");
 const uuid = require('node-uuid');
 
@@ -16,7 +16,7 @@ let exportedMethods = {
             return billCollection
                 .findOne({_id: id})
                 .then((bill) => {
-                    if (!bill)
+                    if (!bill) 
                         throw "Bill not found";
                     return bill;
                 });
@@ -26,35 +26,32 @@ let exportedMethods = {
     getBillByUserId(id) {
         return bill().then((billCollection) => {
             return billCollection
-                .find({"user.userId": id})
+                .find({"userId":  id})
                 .toArray();
         });
     },
 
-    getBillByMonth(userId, month, year) {
+    getBillByDate(date) {
         return bill().then((billCollection) => {
             return billCollection
-                .find({"user.userId": userId, "date.month": month, "date.year": year})
+                .find({"date":  date})
                 .toArray();
         });
     },
 
-    getBillByCategory(userId, category) {
+     getBillByCategory(category) {
         return bill().then((billCollection) => {
             return billCollection
-                .find({
-                    "user.userId": userId,
-                    "category": category
-                })
+                .find({"category":  category})
                 .toArray();
         });
     },
 
     //category and date could get from select on webpage
-    addBill(category, amount, date, note, userID) {
-        if (typeof amount !== "number")
+    addBill(category, amount, date, note, userID ) {
+        if (typeof amount !== "number") 
             return Promise.reject("Must provide a number");
-
+        
         return bill().then((billCollection) => {
             return users
                 .getUserById(userID)
@@ -67,12 +64,8 @@ let exportedMethods = {
                         },
                         category: category,
                         amount: amount,
-                        note: note,
-                        date: {
-                            date: date.getDate(),
-                            month: date.getMonth(),
-                            year: date.getFullYear()
-                        }
+                        date: date,
+                        note: note
                     };
 
                     return billCollection
@@ -94,8 +87,7 @@ let exportedMethods = {
                 .then((deletionInfo) => {
                     if (deletionInfo.deletedCount === 0) {
                         throw(`Could not delete bill with id of ${id}`)
-                    } else {
-                    }
+                    } else {}
                 });
         });
     },
@@ -131,6 +123,6 @@ let exportedMethods = {
             });
         });
     }
-};
+}
 
 module.exports = exportedMethods;

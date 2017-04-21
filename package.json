@@ -36,6 +36,10 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
+    "nodemailer": "^4.0.1",
+    "async": "^2.3.0",
+    "crypto": "^0.0.3",
+    "express-flash": "^0.0.2",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
@@ -43,6 +47,7 @@
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.11.3",
+    "express-validator": "^3.1.3",
     "handlebars": "latest",
     "mongodb": "^2.2.24",
     "morgan": "~1.7.0",
