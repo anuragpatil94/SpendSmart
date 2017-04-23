@@ -66,8 +66,8 @@ let exportedMethods = {
                 username: UserDetails.username,
                 email: UserDetails.email,
                 hashedPassword: UserDetails.hashedPassword,
-                resetPasswordToken,
-                resetPasswordExpires
+                resetPasswordToken:UserDetails.resetPasswordToken,
+                resetPasswordExpires:UserDetails.resetPasswordExpires
                 //UserDetails.hashedPassword
             };
 

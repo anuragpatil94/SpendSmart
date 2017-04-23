@@ -56,7 +56,9 @@ let exportedMethods = {
                             lastName: lastName,
                             username: username,
                             hashedPassword: bcrypt.hashSync(password),
-                            email: email
+                            email: email,
+                            resetPasswordToken:undefined,
+                            resetPasswordExpires:undefined
                         };
                         users.addUser(newUser).then(() => {
                             res.redirect('/users/login');
