@@ -4,7 +4,7 @@ const users = require("../data/users");
 const passport = require("passport");
 
 router.get('/login', function (req, res) {
-    res.render("users/login", {title: "Spend Smart", error: req.flash('error')})
+    res.render("users/login", {title: "Spend Smart", error: req.flash('error')});
 });
 router.post('/login', passport.authenticate('local', {
     failureRedirect: "/login",

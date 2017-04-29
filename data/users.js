@@ -1,53 +1,16 @@
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
-const ObjectId = require('mongodb').ObjectId;
-
 let exportedMethods = {
 
     // This is a fun new syntax that was brought forth in ES6, where we can define
     // methods on an object with this shorthand!
     getUserById(id) {
-        if (typeof id === "string") {
-            id = ObjectId(id);
-        }
         return users().then((userCollection) => {
             return userCollection.findOne({_id: id}).then((user) => {
-                if (!user) throw "User not found";
+                //if (!user) throw "User not found";
+
                 return user;
             });
-        });
-    },
-    getUserByUsername(username) {
-        return users().then((userCollection) => {
-            return userCollection.findOne({username: username})
-                .then((user) => {
-                    if (!user) throw "User not found";
-                    return user;
-                });
-        });
-    },
-    getUserByEmail(email) {
-        console.log('insideuser: ' + email);
-        return users().then((userCollection) => {
-            return userCollection.findOne({email: email})
-                .then((user) => {
-                    if (!user) throw "User not found";
-                    return user;
-                });
-        });
-    },
-    getUserByToken(resetPasswordToken, resetPasswordExpires) {
-        console.log('inside getToken: ' + resetPasswordToken);
-        console.log('inside getToken: ' + resetPasswordExpires);
-        return users().then((userCollection) => {
-            return userCollection.findOne({
-                resetPasswordToken: resetPasswordToken,
-                resetPasswordExpires: {$gt: resetPasswordExpires}
-            })
-                .then((user) => {
-                    if (!user) throw "User not found";
-                    return user;
-                });
         });
     },
     getAllUsers(){
@@ -59,22 +22,24 @@ let exportedMethods = {
     },
     addUser(UserDetails) {
         return users().then((userCollection) => {
-            let newUser = {
-                _id: UserDetails.id,
-                firstName: UserDetails.firstName,
-                lastName: UserDetails.lastName,
-                username: UserDetails.username,
-                email: UserDetails.email,
-                hashedPassword: UserDetails.hashedPassword,
-                resetPasswordToken:UserDetails.resetPasswordToken,
-                resetPasswordExpires:UserDetails.resetPasswordExpires
-                //UserDetails.hashedPassword
-            };
+            return userCollection.findOne({_id: UserDetails.id}).then(u=>{
+                if(!u){
+                    let newUser = {
+                        _id: UserDetails.id,
+                        username: UserDetails.id,
+                        email: UserDetails.email,
+                        hashedPassword: UserDetails.hashedPassword,
+                        categories: [],
+                    };
 
-            return userCollection.insertOne(newUser).then((newInsertInformation) => {
-                return newInsertInformation.insertedId;
-            }).then((newId) => {
-                return this.getUserById(newId);
+                    return userCollection.insertOne(newUser).then((newInsertInformation) => {
+                        return newInsertInformation.insertedId;
+                    }).then((newId) => {
+                        return this.getUserById(newId);
+                    });
+                } else{
+                    throw "User with same Username already exists.";
+                }
             });
         });
     },
@@ -85,33 +50,19 @@ let exportedMethods = {
                     throw (`Could not delete user with id of ${id}`);
                 else
                     return (`Deleted user ${id} successfully`);
-
             });
         });
     },
+
     updateUser(id, UpdatedInfo) {
         return users().then((userCollection) => {
             return this.getUserById(id).then((currentUser) => {
-
-                let updatedUser = {};
-                if (UpdatedInfo.firstName) {
-                    updatedUser.firstName = UpdatedInfo.firstName;
-                }
-                if (UpdatedInfo.lastName) {
-                    updatedUser.lastName = UpdatedInfo.lastName;
-                }
-                if (UpdatedInfo.email) {
-                    updatedUser.email = UpdatedInfo.email;
-                }
-                if (UpdatedInfo.hashedPassword) {
-                    updatedUser.hashedPassword = UpdatedInfo.hashedPassword;
-                }
-                if (UpdatedInfo.resetPasswordExpires) {
-                    updatedUser.resetPasswordExpires = UpdatedInfo.resetPasswordExpires;
-                }
-                if (UpdatedInfo.resetPasswordToken) {
-                    updatedUser.resetPasswordToken = UpdatedInfo.resetPasswordToken;
-                }
+                let updatedUser = {
+                    username: UpdatedInfo.username,
+                    email: UpdatedInfo.email,
+                    hashedPassword: UpdatedInfo.hashedPassword,
+                    categories: UpdatedInfo.categories
+                };
 
                 let updateCommand = {
                     $set: updatedUser
@@ -122,7 +73,7 @@ let exportedMethods = {
                 });
             });
         });
-    },
+    }
 };
 
 module.exports = exportedMethods;

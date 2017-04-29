@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 const budget = require("../data/budget");
 
-router.get('/budget', function (req, res) {
-    budget.getBudgetByUserId(req.username)
+router.get('/', function (req, res) {
+    budget.getBudgetByUserId(req.user.username)
         .then(b => {
-            res.json(b);
+            res.render("budget/budget",{user:req.user,budget:b});
         }, e => {
             res.sendStatus(404);
         });
 });
-router.post("/budget", (req, res) => {
-    budget.addBudget(req.category, req.amount, req.date, req.username)
+router.post("/", (req, res) => {
+    budget.addBudget(req.body.category, parseInt(req.body.amount), req.body.monthYear, req.user.username)
         .then(b => {
-            res.json(b);
+            res.redirect("/",201);
         }, e => {
             res.sendStatus(500);
         });

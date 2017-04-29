@@ -1,0 +1,144 @@
+<header class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index">Spend Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/index">Dashboard</a></li>
+                    <li><a href="/budget">Budget</a></li>
+                    <li class="active"><a href="/expenses">Expenses<span class="sr-only">(current)</span></a></li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <form action="/logout" method="POST" id="logout">
+                    </form>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/profile">Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#" id="logout-link">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+
+    </nav>
+
+</header>
+<div class="container" style="padding-top: 70px">
+    <div class="row">
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar affix">
+                <ul class="nav bs-docs-sidenav">
+                    <li><a href="#addExpense" data-toggle="modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Expense</a></li>
+                    <li><a href="#previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous Month</a></li>
+                    <li><a href="#next">Next Month <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-6" role="main">
+            {{#each groups}} {{> date-group }} {{/each}}
+        </div>
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar affix">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Panel title</h3>
+                    </div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div id="addExpense" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add a new expense</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="expense-form" action="/expenses" method="post" role="form" style="display: block;">
+                    {{#if error }}
+                    <div class="form-group">
+                        <div class="alert alert-danger alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{ error }}
+                        </div>
+                    </div>
+                    {{/if}}
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="date">Date:</label>
+                        <div class="col-sm-4">
+                            <input type="date" name="date" id="date" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="category">Category:</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="category" id="category">
+                            <option value="1">Income</option>
+                                            <option value="2">Bills &amp; Utilities</option>
+                                            <option value="3">Education</option>
+                                            <option value="4">Entertainment</option>
+                                            <option value="5">Family</option>
+                                            <option value="6">Fees &amp; Charges</option>
+                                            <option value="7">Food &amp; Beverage</option>
+                                            <option value="8">Gifts &amp; Donations</option>
+                                            <option value="9">Health &amp; Fitness</option>
+                                            <option value="10">Insurances</option>
+                                            <option value="11">Investment</option>
+                                            <option value="12">Insurances</option>
+                                            <option value="13">Shopping</option>
+                                            <option value="14">Transportation</option>
+                                            <option value="15">Travels</option>
+                                            <option value="16">Others</option>    
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="amount">Amount:</label>
+                        <div class="col-sm-4">
+                            <input type="number" min="0" name="amount" id="amount" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="note">Note:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="note" id="note" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Close</button>
+                <input type="submit" id="submit" class="btn btn-default" data-dismiss="modal" value="Add"></input>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="/public/javascripts/index.js"></script>
+<script src="/public/javascripts/expenses.js"></script>

@@ -1,33 +1,61 @@
 const connection = require("../config/mongoConnection");
 const users = require("../data/users");
 const bcrypt = require("bcrypt-nodejs");
-const uuid = require("node-uuid");
-let userDetails = {
-    _id: uuid.v4(),
-    username: "psharm8",
-    email: "psharm8@gmail.com"
-};
-userDetails.hashedPassword = bcrypt.hashSync("1234");
-users.getAllUsers().then(user => {
-    user.forEach(u => {
-        console.log(JSON.stringify(u, null, 4));
-        // users.removeUser(u._id).then(()=>{
-        //     console.log(`removed user ${u._id}`);
-        // });
-    });
-});
-//Create the user
-// let getUser = users.addUser(userDetails);
-// getUser.then((u) => {
-//     console.log("Newly added user details :\n" + JSON.stringify(u,null,4));
-//     return u;
-// }).then(un=>{
-//     return users.getUserById(un._id).then(u=>{
-//         console.log(JSON.stringify(u,null,4));
-//     })
-// }).catch((e) => {
-//     console.log("ERROR Cooured while adding a user:" + e);
+const transactions = require("../data/bills");
+const Enumerable = require("linq");
+
+// users.getAllUsers().then(u=>{
+//     u.forEach(x=>users.removeUser(x._id));
 // });
-users.getUserById("58e775ad6a3c3744d8d11713").then(u => {
-    console.log(JSON.stringify(u, null, 4));
-});
+
+
+// transactions.addBill("Transportation", 15, new Date(), "Bus Tickets", "test");
+// transactions.getBillByUserId("test")
+//     .then(b => {
+//         let g = Enumerable.from(b)
+//             .groupBy(b=>b.date.full.toDateString())
+//             .select(a=>{
+//                 let d=new Date(a.key());
+//                 return {
+//                     date:d.getDate(),
+//                     month:d.toLocaleString("en-us", {month:"long"}),
+//                     year:d.getFullYear(),
+//                     bills:a.toArray()
+//                 };
+//             })
+//             .toArray();
+//         console.log(JSON.stringify(g, null, 4));
+//     });
+
+// transactions.getBillByUserId("psharm8")
+//     .then(b => {
+//         console.log(JSON.stringify(b, null, 4));
+//     }).then(() => {
+//     return transactions.getBillByCategory("psharm8", "food");
+// }).then(b => {
+//     console.log(JSON.stringify(b, null, 4));
+// }).then(() => {
+//     return transactions.getBillByMonth("psharm8", 2, 2017);
+// }).then(b => {
+//     console.log(JSON.stringify(b, null, 4));
+// });
+// Test Transactions
+
+//CREATE Transaction
+//transactions.addTransaction(username,transactionDetails).then((res)=>{console.log("Transaction of user:"+username+"::"+JSON.stringify(res,null,4))})
+
+//RETRIEVE transactions
+//1. by id
+//transactions.getTransactionById("58efac085042c63b50b8375e").then((res)=>{console.log("Transaction details by id are::" +JSON.stringify(res,null,4))})
+//2. by username
+//transactions.getTransactionByUserId(username).then((res)=>{console.log("Transaction details by username are::" +JSON.stringify(res,null,4))})
+//3. by category name
+//transactions.getTransactionByCategory(categoryName).then((res)=>{console.log("Transaction details by Category are::" +JSON.stringify(res,null,4))})
+//4. by category month
+//transactions.getTransactionByMonth("April").then((res)=>{console.log("Transaction details by Month are::" +JSON.stringify(res,null,4))})
+
+//UPDATE transactions
+//transactions.updateTransaction("58efac085042c63b50b8375e",updatedInfo).then((res)=>{console.log("Result of update request::" +JSON.stringify(res,null,4))})
+
+//DELETE TRANSACTION
+//transactions.removeTransaction("58efac085042c63b50b8375e").then((res)=>{console.log("Result of Delete request::" +JSON.stringify(res,null,4))})

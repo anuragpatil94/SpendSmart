@@ -4,7 +4,7 @@ const users = require("./users");
 const uuid = require('node-uuid');
 
 let exportedMethods = {
-    
+
     getAllBudget() {
         return budget().then((budgetCollection) => {
             return budgetCollection.find({}).toArray();
@@ -16,7 +16,7 @@ let exportedMethods = {
             return budgetCollection
                 .findOne({_id: id})
                 .then((budget) => {
-                    if (!budget) 
+                    if (!budget)
                         throw "Budget not found";
                     return budget;
                 });
@@ -26,7 +26,7 @@ let exportedMethods = {
     getBudgetByUserId(id) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .find({"userId":  id})
+                .find({"userId": id})
                 .toArray();
         });
     },
@@ -34,23 +34,23 @@ let exportedMethods = {
     getBudgetByDate(date) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .find({"date":  date});
+                .find({"date": date});
         });
     },
 
-     getBudgetByCategory(category) {
+    getBudgetByCategory(category) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .find({"category":  category})
+                .find({"category": category})
                 .toArray();
         });
     },
 
     //category and date could get from select on webpage
-    addBudget(category, amount, date, userID ) {
-        if (typeof amount !== "number") 
+    addBudget(category, amount, date, userID) {
+        if (typeof amount !== "number")
             return Promise.reject("Must provide a number");
-        
+
         return budget().then((budgetCollection) => {
             return users
                 .getUserById(userID)
@@ -85,7 +85,8 @@ let exportedMethods = {
                 .then((deletionInfo) => {
                     if (deletionInfo.deletedCount === 0) {
                         throw(`Could not delete budget with id of ${id}`)
-                    } else {}
+                    } else {
+                    }
                 });
         });
     },
