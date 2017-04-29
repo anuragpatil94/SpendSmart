@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bills = require("../data").bills;
 const Enumerable = require("linq");
-
+const users = require("../data/users");
 router.post("/", (req, res) => {
     bills.addBill(req.body.category, parseInt(req.body.amount), new Date(Date.parse(req.body.date)), req.body.note, req.user.username)
         .then(b => {
@@ -26,9 +26,12 @@ router.get("/:month/:year", (req, res) => {
                         total:0
                     };
                 }).toArray();
-            res.render("expenses/expenses", {user:req.user,groups:g});
+                return users.getUserCategories(req.user.username).then(c=>{
+                    res.render("expenses/expenses", {user:req.user,groups:g,categories:c});
+                });
+            
         }, e => {
-            res.status(404).render("expenses/expenses", {error:e, bills:[]});
+            res.status(404).render("expenses/expenses", {error:e});
         });
 });
 router.get("/", (req, res) => {

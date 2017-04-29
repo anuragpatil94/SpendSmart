@@ -84,7 +84,7 @@ let exportedMethods = {
                 .removeOne({_id: id})
                 .then((deletionInfo) => {
                     if (deletionInfo.deletedCount === 0) {
-                        throw(`Could not delete budget with id of ${id}`)
+                        throw(`Could not delete budget with id of ${id}`);
                     } else {
                     }
                 });
