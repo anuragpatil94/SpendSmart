@@ -27,7 +27,13 @@ router.get("/:month/:year", (req, res) => {
                     };
                 }).toArray();
                 return users.getUserCategories(req.user.username).then(c=>{
-                    res.render("expenses/expenses", {user:req.user,groups:g,categories:c});
+                    let thisMonth = new Date(parseInt(req.params.year), parseInt(req.params.month)-1);
+                    let last = new Date(thisMonth);
+                    last.setMonth(last.getMonth()-1);
+                    let next = new Date(thisMonth);
+                    next.setMonth(next.getMonth()+1);
+                    res.render("expenses/expenses", {user:req.user,groups:g,categories:c,
+                         previous:(last.getMonth()+1)+"/"+last.getFullYear(), next:(next.getMonth()+1)+"/"+next.getFullYear()});
                 });
             
         }, e => {

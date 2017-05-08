@@ -42,20 +42,31 @@
     </nav>
 
 </header>
-<div class="container" style="padding-top: 70px">
+<div class="container main-padding main-min-height">
     <div class="row">
         <div class="col-md-3" role="complementary">
             <nav class="bs-docs-sidebar affix">
                 <ul class="nav bs-docs-sidenav">
                     <li><a href="#addExpense" data-toggle="modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Expense</a></li>
-                    <li><a href="#previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous Month</a></li>
-                    <li><a href="#next">Next Month <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+                    <li><a href="/expenses/{{previous}}" id="previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous Month</a></li>
+                    <li><a href="/expenses/{{next}}" id="next">Next Month <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
                 </ul>
             </nav>
         </div>
+         {{#if groups}}
         <div class="col-md-6" role="main">
             {{#each groups}} {{> date-group }} {{/each}}
         </div>
+        {{else}}
+        <div class="col-md-6" role="main">
+            <div class="jumbotron">
+                <h1>Add expenses</h1>
+                <p>Add the money you spent.</p>
+                <p>Watch how much you spent against each category.</p>
+            </div>
+        </div>
+        {{/if}}
+        
         <div class="col-md-3" role="complementary">
             <nav class="bs-docs-sidebar affix">
                 <div class="panel panel-default">

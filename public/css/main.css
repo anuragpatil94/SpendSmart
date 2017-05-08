@@ -118,7 +118,9 @@
 .main-padding {
      padding-top: 70px;
 }
-
+.main-min-height{
+    min-height: 500px;
+}
 .border-bottom {
     border-bottom: 1px solid #AFAFAF;
 }
