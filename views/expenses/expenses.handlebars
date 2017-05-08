@@ -42,6 +42,7 @@
     </nav>
 
 </header>
+<h1></h1><h2></h2>
 <div class="container main-padding main-min-height">
     <div class="row">
         <div class="col-md-3" role="complementary">
@@ -102,8 +103,12 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="date">Date:</label>
                         <div class="col-sm-4">
-                            <input type="date" name="date" id="date" class="form-control">
-                            </select>
+                            <div class="input-group date">
+                                <input type="text" id="date" name="date" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -111,7 +116,7 @@
                         <div class="col-sm-4">
                             <select class="form-control" name="category" id="category">
                                 {{#each categories}}
-                                <option value="{{key}}">{{value}}</option>
+                                <option value='{{this}}'>{{this}}</option>
                                 {{/each}}
                             </select>
                         </div>
@@ -131,12 +136,32 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Close</button>
-                <input type="submit" id="submit" class="btn btn-default" data-dismiss="modal" value="Add"></input>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a id="submit" class="btn btn-success btn-ok">Add</a>
             </div>
         </div>
 
     </div>
 </div>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+                <p>You are about to delete this expense, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+            </div>
+            <form id="delete-form" method="POST" class="hidden"></form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/public/javascripts/index.js"></script>
+<script src="/public/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="/public/javascripts/expenses.js"></script>

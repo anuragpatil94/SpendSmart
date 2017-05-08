@@ -4,7 +4,7 @@ const categories = mongoCollections.categories;
 let exportedMethods = {
 
     defaultCategories() {
-        return ["Income", "Bills and Utilities", "Education", "Entertainment", "Family", "Fees and Charges", "Food and Beverage", "Gifts and Donations", "Health and Fitness", "Insurances", "Investment", "Insurances", "Shopping", "Transportation", "Travels", "Others"];
+        return ["Bills and Utilities", "Education", "Entertainment", "Family", "Fees and Charges", "Food and Beverage", "Gifts and Donations", "Health and Fitness", "Insurances", "Investment", "Shopping", "Transportation", "Travels", "General"];
     },
     // This is a fun new syntax that was brought forth in ES6, where we can define
     // methods on an object with this shorthand!
@@ -28,11 +28,7 @@ let exportedMethods = {
         return categories().then(catCol => {
             return catCol.findOne({ _id: userId }).then(c => {
                 if (!c) {
-                    c=[];
-                    let cat = this.defaultCategories();
-                    for (let i = 1; i <= cat.length; i++) {
-                        c[i] = { key: i, value: cat[i] };
-                    }
+                    return this.defaultCategories();
                 }
                 return c;
             });
@@ -54,14 +50,10 @@ let exportedMethods = {
                         return newInsertInformation.insertedId;
                     }).then((newId) => {
                         return categories().then(catCol => {
-                            let cat = this.defaultCategories();
-                            let catMap = [];
-                            for (let i = 1; i <= cat.length; i++) {
-                                catMap[i] = { key: i, value: cat[i] };
-                            }
+                            let cat = this.defaultCategories();                            
                             let userCat = {
                                 _id: newId,
-                                categories: catMap
+                                categories: cat
                             };
                             return catCol.insertOne(newCat).then((newInsertInformation) => {
                                 return newInsertInformation.insertedId;
