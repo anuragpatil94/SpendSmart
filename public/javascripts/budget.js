@@ -30,7 +30,7 @@ $(function () {
             'titlePosition': 'none',
             'is3D': 'true',
             'height': '400',
-            'legend':{'position':'bottom'}
+            'legend':{'position':'top', 'maxLines':'3'}
         };
 
         // Instantiate and draw our chart, passing in some options.

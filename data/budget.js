@@ -42,7 +42,7 @@ let exportedMethods = {
                     "month": month,
                     "year": year,
                     "userId": user
-                });
+                }).toArray();
         });
     },
 
