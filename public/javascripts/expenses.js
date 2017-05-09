@@ -5,7 +5,9 @@ $(function () {
         console.log("form submit");
     });
     $('.input-group.date').datepicker({
+        todayBtn: "linked",
         autoclose: true,
+        todayHighlight: true,
         format: "mm/dd/yyyy",
         startView: 0,
         minViewMode: 0

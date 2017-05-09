@@ -42,18 +42,20 @@
     </nav>
 
 </header>
-<div class="container" style="padding-top: 70px">
+<div class="container main-padding main-min-height">
     <div class="row">
         <div class="col-md-3" role="complementary">
             <nav class="bs-docs-sidebar affix">
                 <ul class="nav bs-docs-sidenav">
-                    <li><a href="#addBudget" data-toggle="modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Budget</a></li>
+                    <li><a href="#addBudget" data-toggle="modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add/Update Budget</a></li>
                 </ul>
             </nav>
         </div>
         {{#if budget}}
+        <input type="hidden" value='{{asJSON budget}}' id="budget"></input>
         <div class="col-md-6" role="main">
-            {{budget}}
+            <h1 class="text-center">Budget Breakup</h1>
+            <div id="chart_div"></div>
         </div>
         {{else}}
         <div class="col-md-6" role="main">
@@ -125,4 +127,5 @@
 </div>
 <script src="/public/javascripts/index.js"></script>
 <script src="/public/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/public/javascripts/budget.js"></script>

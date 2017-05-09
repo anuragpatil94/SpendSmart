@@ -27,9 +27,11 @@ router.get("/:month/:year", (req, res) => {
                         }),
                         year: d.getFullYear(),
                         bills: a.toArray(),
-                        total: 0
+                        total: a.sum(q=>q.amount)
                     };
                 }).toArray();
+                let total = 0;
+                total = g.reduce((p,cu)=>p+cu.total, total);
             return users.getUserCategories(req.user.username).then(c => {
                 let thisMonth = new Date(parseInt(req.params.year), parseInt(req.params.month) - 1);
                 let last = new Date(thisMonth);
@@ -39,6 +41,7 @@ router.get("/:month/:year", (req, res) => {
                 res.render("expenses/expenses", {
                     user: req.user,
                     groups: g,
+                    total: total,
                     categories: c,
                     previous: (last.getMonth() + 1) + "/" + last.getFullYear(),
                     next: (next.getMonth() + 1) + "/" + next.getFullYear()
