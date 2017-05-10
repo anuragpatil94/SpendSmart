@@ -1,0 +1,167 @@
+<header class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index">Spend Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/index">Dashboard</a></li>
+                    <li><a href="/budget">Budget</a></li>
+                    <li class="active"><a href="/expenses">Expenses<span class="sr-only">(current)</span></a></li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <form action="/logout" method="POST" id="logout">
+                    </form>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/profile">Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#" id="logout-link">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+
+    </nav>
+
+</header>
+<h1></h1><h2></h2>
+<div class="container main-padding main-min-height">
+    <div class="row">
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar affix">
+                <ul class="nav bs-docs-sidenav">
+                    <li><a href="#addExpense" data-toggle="modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Expense</a></li>
+                    <li><a href="/expenses/{{previous}}" id="previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous Month</a></li>
+                    <li><a href="/expenses/{{next}}" id="next">Next Month <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+                </ul>
+            </nav>
+        </div>
+         {{#if groups}}
+        <div class="col-md-6" role="main">
+            {{#each groups}} {{> date-group }} {{/each}}
+        </div>
+        {{else}}
+        <div class="col-md-6" role="main">
+            <div class="jumbotron">
+                <h1>Add expenses</h1>
+                <p>Add the money you spent.</p>
+                <p>Watch how much you spent against each category.</p>
+            </div>
+        </div>
+        {{/if}}
+        
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar affix">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Total Expenses</h3>
+                    </div>
+                    <div class="panel-body text-center">
+                        $ {{total}}
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div id="addExpense" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add a new expense</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="expense-form" action="/expenses" method="post" role="form" style="display: block;">
+                    {{#if error }}
+                    <div class="form-group">
+                        <div class="alert alert-danger alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{ error }}
+                        </div>
+                    </div>
+                    {{/if}}
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="date">Date:</label>
+                        <div class="col-sm-5">
+                            <div class="input-group date">
+                                <input type="text" readonly="readonly" id="date" name="date" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="category">Category:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" name="category" id="category">
+                                {{#each categories}}
+                                <option value='{{this}}'>{{this}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="amount">Amount:</label>
+                        <div class="col-sm-5">
+                            <input type="number" min="0" name="amount" id="amount" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="note">Note:</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="note" id="note" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a id="submit" class="btn btn-success btn-ok">Add</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+                <p>You are about to delete this expense, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+            </div>
+            <form id="delete-form" method="POST" class="hidden"></form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/public/javascripts/index.js"></script>
+<script src="/public/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="/public/javascripts/expenses.js"></script>

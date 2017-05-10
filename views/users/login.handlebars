@@ -1,5 +1,41 @@
-<header class="container border-bottom">
-    <h1>Spend Smart</h1>
+<header class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index">Spend Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="disabled"><a href="#">Dashboard</a></li>
+                    <li class="disabled"><a href="#">Budget</a></li>
+                    <li class="disabled"><a href="#">Expenses</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <form action="/logout" method="POST" id="logout">
+                    </form>
+                    <li class="disabled" class="dropdown" aria-hidden="true">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{user.username}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu disabled">
+                            <li><a href="#">Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#" id="logout-link">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 </header>
 <main class="container">
     <div class="container login-padding">
@@ -8,20 +44,35 @@
                 <div class="panel panel-login">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-6">
-                                <a href="#" class="active" id="login-form-link">Login</a>
-                            </div>
-                            <div class="col-xs-6">
-                                <a href="#" id="register-form-link">Register</a>
-                            </div>
+                            {{#if register }}
+                                <div class="col-xs-6">
+                                    <a href="#" id="login-form-link">Login</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a href="#" class="active" id="register-form-link">Register</a>
+                                </div>
+                            {{else}}
+                                <div class="col-xs-6">
+                                    <a href="#" class="active" id="login-form-link">Login</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a href="#" id="register-form-link">Register</a>
+                                </div>
+                            {{/if}}
                         </div>
                         <hr>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
+                                {{#if register }}
+                                <form id="login-form" method="post" role="form" style="display: none;">
+                                {{else}}
                                 <form id="login-form" method="post" role="form" style="display: block;">
-                                    {{#if error }}
+                                {{/if}}
+                                {{#if error }}
+                                    {{#if register }}
+                                    {{else}}
                                         <div class="form-group">
                                             <div class="alert alert-danger alert-dismissable">
                                                 <a href="#" class="close" data-dismiss="alert"
@@ -30,67 +81,96 @@
                                             </div>
                                         </div>
                                     {{/if}}
-                                    <div class="form-group">
-                                        <input type="text" name="username" id="username" tabindex="1"
-                                               class="form-control"
-                                               placeholder="Username" value="">
+                                {{/if}}
+                                <div class="form-group">
+                                    <input type="text" name="username" id="username" tabindex="1"
+                                           class="form-control"
+                                           placeholder="Username" aria-label="Username"  value="">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" id="password" tabindex="2"
+                                           class="form-control" aria-label="Password" placeholder="Password">
+                                </div>
+                                <div class="form-group text-center hidden">
+                                    <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                                    <label for="remember"> Remember Me</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <input type="submit" name="login-submit" id="login-submit" tabindex="4"
+                                                   class="form-control btn btn-login" value="Log In">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" id="password" tabindex="2"
-                                               class="form-control" placeholder="Password">
-                                    </div>
-                                    <div class="form-group text-center hidden">
-                                        <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
-                                        <label for="remember"> Remember Me</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-sm-offset-3">
-                                                <input type="submit" name="login-submit" id="login-submit" tabindex="4"
-                                                       class="form-control btn btn-login" value="Log In">
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="text-center">
+                                                <a href="#" tabindex="5" class="forgot-password">Forgot
+                                                    Password?</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="text-center">
-                                                    <a href="#" tabindex="5" class="forgot-password">Forgot
-                                                        Password?</a>
-                                                </div>
+                                </div>
+                            </form>
+                                {{#if register }}
+                                <form id="register-form" method="post" action="/register" role="form"
+                                      style="display: block;">
+                                {{else}}
+                                <form id="register-form" method="post" action="/register" role="form"
+                                      style="display: none;">
+                                {{/if}}
+
+                                {{#if error }}
+                                    {{#if register }}
+                                        <div class="form-group">
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <a href="#" class="close" data-dismiss="alert"
+                                                   aria-label="close">&times;</a>
+                                                {{ error }}
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
-                                <form id="register-form" method="post" role="form" style="display: none;">
-                                    <div class="form-group">
-                                        <input type="text" name="username" id="username" tabindex="1"
-                                               class="form-control"
-                                               placeholder="Username" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="email" name="email" id="email" tabindex="1" class="form-control"
-                                               placeholder="Email Address" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" id="password" tabindex="2"
-                                               class="form-control" placeholder="Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="confirm-password" id="confirm-password"
-                                               tabindex="2"
-                                               class="form-control" placeholder="Confirm Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-sm-offset-3">
-                                                <input type="submit" name="register-submit" id="register-submit"
-                                                       tabindex="4" class="form-control btn btn-register"
-                                                       value="Register Now">
-                                            </div>
+                                    {{/if}}
+                                {{/if}}
+                                <div class="form-group">
+                                    <input type="text" name="firstname" id="firstname" tabindex="1"
+                                           class="form-control"
+                                           placeholder="First Name" aria-label="First Name" value="{{firstname}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="lastname" id="lastname" tabindex="2"
+                                           class="form-control"
+                                           placeholder="Last Name" aria-label="Last Name" value="{{lastname}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="username" id="username" tabindex="3"
+                                           class="form-control"
+                                           placeholder="Username" aria-label="Username" value="{{username}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" id="email" tabindex="4" class="form-control"
+                                           placeholder="Email Address" aria-label="Email Address" value="{{email}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" id="password" tabindex="5"
+                                           class="form-control" placeholder="Password" aria-label="Password" value="{{password}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="confirmPassword" id="confirmPassword"
+                                           tabindex="6"
+                                           class="form-control" aria-label="Confirm Password" placeholder="Confirm Password">
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <input type="submit" name="register-submit" id="register-submit"
+                                                   tabindex="4" class="form-control btn btn-register"
+                                                   value="Register Now">
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+                            </form>
                             </div>
                         </div>
                     </div>

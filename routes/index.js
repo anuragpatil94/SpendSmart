@@ -2,10 +2,15 @@ const users = require("../data/users");
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcrypt-nodejs");
+const txRoutes = require("./transactions");
+const budgetRoutes=require("./budget");
 
 let exportedMethods = {
     configRoutes(app){
-        app.use("/index", (req, res) => {
+
+        app.use("/expenses", txRoutes);
+        app.use("/budget", budgetRoutes);
+        app.get("/index", (req, res) => {
             if (!req.isAuthenticated()) {
                 res.redirect("/login");
                 return;
@@ -30,6 +35,39 @@ let exportedMethods = {
             req.logout();
             res.redirect('/');
         });
+        app.post("/register", function (req, res) {
+            users.addUser({
+                id: req.body.username,
+                hashedPassword: bcrypt.hashSync(req.body.password),
+                email: req.body.email
+            }).then(u => {
+                req.login(u, (err) => {
+                    if (!err) {
+                        res.redirect("/index");
+                    }
+                    else {
+                        res.location("back")
+                            .render("users/login", {
+                            error: err,
+                            register: true,
+                            email: req.body.email,
+                            username: req.body.username,
+                            password: req.body.password,
+                            confirmPassword:req.body.confirmPassword
+                        });
+                    }
+                });
+            }, err => {
+                res.render("users/login", {
+                    error: err,
+                    register: true,
+                    email: req.body.email,
+                    username: req.body.username,
+                    password: req.body.password,
+                    confirmPassword:req.body.confirmPassword
+                });
+            });
+        });
         app.use("/", (req, res) => {
             res.redirect("/index");
         });
@@ -41,7 +79,7 @@ let exportedMethods = {
     configPassport(passport) {
         passport.use(new LocalStrategy(
             function (username, password, cb) {
-                return users.getUserByUsername(username)
+                return users.getUserById(username)
                     .then(user => {
                         if (!user) {
                             return cb(null, false, {message: 'Incorrect username.'});
