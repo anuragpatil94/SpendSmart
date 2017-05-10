@@ -4,7 +4,7 @@ const users = require("./users");
 const uuid = require('node-uuid');
 
 let exportedMethods = {
-    
+
     getAllBudget() {
         return budget().then((budgetCollection) => {
             return budgetCollection.find({}).toArray();
@@ -14,9 +14,11 @@ let exportedMethods = {
     getBudgetById(id) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .findOne({_id: id})
+                .findOne({
+                    _id: id
+                })
                 .then((budget) => {
-                    if (!budget) 
+                    if (!budget)
                         throw "Budget not found";
                     return budget;
                 });
@@ -26,54 +28,66 @@ let exportedMethods = {
     getBudgetByUserId(id) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .find({"userId":  id})
+                .find({
+                    "userId": id
+                })
                 .toArray();
         });
     },
 
-    getBudgetByDate(date) {
+    getBudgetForMonth(user, month, year) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .find({"date":  date});
+                .find({
+                    "month": month,
+                    "year": year,
+                    "userId": user
+                }).toArray();
         });
     },
 
-     getBudgetByCategory(category) {
+    getBudgetByCategory(user, month, year, category) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .find({"category":  category})
-                .toArray();
+                .findOne({
+                    "month": month,
+                    "year": year,
+                    "userId": user,
+                    "category": category
+                });
         });
     },
 
     //category and date could get from select on webpage
-    addBudget(category, amount, date, userID ) {
-        if (typeof amount !== "number") 
+    addBudget(category, amount, month, year, userID) {
+        if (typeof amount !== "number")
             return Promise.reject("Must provide a number");
-        
+
         return budget().then((budgetCollection) => {
             return users
                 .getUserById(userID)
                 .then((budgetOfUser) => {
-                    let newBudget = {
-                        _id: uuid.v4(),
-                        user: {
-                            userId: userID,
-                            userName: budgetOfUser.email
-                        },
-                        category: category,
-                        amount: amount,
-                        date: date
-                    };
-
-                    return budgetCollection
-                        .insertOne(newBudget)
-                        .then((newInsertInformation) => {
-                            return newInsertInformation.insertedId;
-                        })
-                        .then((newId) => {
-                            return this.getBudgetById(newId);
-                        });
+                    return this.getBudgetByCategory(userID, month, year, category)
+                    .then(b => {
+                        if (!b) {
+                            let newBudget = {
+                                _id: uuid.v4(),
+                                userId: userID,
+                                category: category,
+                                amount: amount,
+                                month: month,
+                                year: year
+                            };
+                            return budgetCollection
+                                .insertOne(newBudget)
+                                .then((newInsertInformation) => {
+                                    return newInsertInformation.insertedId;
+                                });
+                        } else {
+                            return this.updateBudget(b._id, {amount:amount});
+                        }
+                    });
+                   
                 });
         });
     },
@@ -81,10 +95,12 @@ let exportedMethods = {
     removeBudget(id) {
         return budget().then((budgetCollection) => {
             return budgetCollection
-                .removeOne({_id: id})
+                .removeOne({
+                    _id: id
+                })
                 .then((deletionInfo) => {
                     if (deletionInfo.deletedCount === 0) {
-                        throw(`Could not delete budget with id of ${id}`)
+                        throw (`Could not delete budget with id of ${id}`);
                     } else {}
                 });
         });
@@ -116,7 +132,29 @@ let exportedMethods = {
                 return this.getBudgetById(id);
             });
         });
+    },
+    updateSpending(id, total, month, year, category) {
+        return budget().then((budgetCollection) => {
+            let updatedBudgetData = {};
+
+            if (total) {
+                updatedBudgetData.total = total;
+            }
+
+            let updateCommand = {
+                $set: updatedBudgetData
+            };
+
+            return budgetCollection.updateOne({
+                userId: id,
+                month: month,
+                year: year,
+                category: category
+            }, updateCommand).then((result) => {
+                return this.getBudgetForMonth(id, month, year);
+            });
+        });
     }
-}
+};
 
 module.exports = exportedMethods;
