@@ -14,4 +14,7 @@ $(function () {
         $(this).addClass('active');
         e.preventDefault();
     });
+
+     $('#login-form').validator();
+      $('#register-form').validator();
 });

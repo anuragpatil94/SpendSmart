@@ -17,18 +17,17 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/index">Dashboard</a></li>
-                    <li class="active"><a href="/budget">Budget<span class="sr-only">(current)</span></a></li>
+                    <li><a href="/budget">Budget</a></li>
                     <li><a href="/expenses">Expenses</a></li>
-
                 </ul>
-               
+
                 <ul class="nav navbar-nav navbar-right">
                     <form action="/logout" method="POST" id="logout">
                     </form>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username}} <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.fullname}} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Profile</a></li>
+                            <li><a href="/profile">Profile</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="#" id="logout-link">Logout</a></li>
                         </ul>
@@ -42,61 +41,83 @@
     </nav>
 
 </header>
-<div class="container" style="padding-top: 70px">
-        <div class="row">
-            <div class="col-md-3" role="complementary">
-                <nav class="bs-docs-sidebar affix">
-                    <ul class="nav bs-docs-sidenav">
-                        <li>First Name:</li>
-                        <li>Last Name:</li>
-                        <li>User Name:</li>
-                        <li>Email ID:</li>
-                      <li> <a href="#changePassword"  data-toggle="modal"> Password: </a> </li>
-                    </ul>
-                </nav>
+<div class="container main-padding main-min-height">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3 class="text-center">Edit Profile</h3>
+            {{#if error }}
+            <div class="form-group">
+                <div class="alert alert-danger alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ error }}
+                </div>
             </div>
+            {{/if}}
+            {{#if msg }}
+            <div class="form-group">
+                <div class="alert alert-success alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ msg }}
+                </div>
             </div>
-    </div>
-<div id="changePassword" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Change Password</h4>
-            </div>
-
-            <div class="modal-body">
-
-                <form class="form-horizontal" id="profile-form" action="/profile" method="post" role="form" style="display: block;">
-                    {{#if error }}
-                    <div class="form-group">
-                        <div class="alert alert-danger alert-dismissable">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{ error }}
-                        </div>
-                    </div>
-                    {{/if}}
-                        <div class="form-group">
-                        <label class="control-label col-sm-2">New Password</label>
-                        <div class="col-sm-4">
-                        <input type="text" name="newPassword1" id="newPassword1" class="form-control">
-                        </div>
-                        <label class="control-label col-sm-2">Confirm Password</label>
-                        <div class="col-sm-4">
-                        <input type="text" name="newPassword2" id="newPassword2" class="form-control">
-                        </div>
-                    </div>                   
-                </form>
-            </div>
+            {{/if}}
             
-            <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Close</button>
-                <input type="submit" id="submit" class="btn btn-default" data-dismiss="modal" value="Done"></input>
-            </div>
-        </div>
 
+            <form class="form-horizontal" id="profile-form" method="POST" action="/profile" role="form">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="firstname">First name</label>
+                    <div class="col-lg-8">
+                        <input id="firstname" name="firstname" class="form-control" type="text" value="{{user.firstname}}" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="lastname">Last name</label>
+                    <div class="col-lg-8">
+                        <input id="lastname" name="lastname" class="form-control" type="text" value="{{user.lastname}}" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>                
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="email">Email</label>
+                    <div class="col-lg-8">
+                        <input id="email" name="email" class="form-control" type="email" value="{{user.email}}" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>               
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="username">Username</label>
+                    <div class="col-md-8">
+                        <input id="username" name="username" class="form-control" type="text" value="{{user.username}}" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="inputpassword">Password</label>
+                    <div class="col-md-8">
+                        <input id="inputpassword" name="password" class="form-control" type="password" data-minlength="6" required>
+                        <div class="help-block">Minimum of 6 characters</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="confirmPassword">Confirm password</label>
+                    <div class="col-md-8">
+                        <input id="confirmPassword" name="confirmPassword" class="form-control" type="password" data-match="#inputpassword" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+                        <input type="submit" class="btn btn-primary" value="Save Changes">
+                        <span></span>
+                        <input type="reset" class="btn btn-default" value="Cancel">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
 <script src="/public/javascripts/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
 <script src="/public/javascripts/profile.js"></script>

@@ -12,6 +12,9 @@ let exportedMethods = {
         return users().then((userCollection) => {
             return userCollection.findOne({ _id: id }).then((user) => {
                 //if (!user) throw "User not found";
+                if(!user.fullname){
+                    user.fullname = user.firstname + " "+user.lastname;                    
+                }              
 
                 return user;
             });
@@ -41,6 +44,8 @@ let exportedMethods = {
                 if (!u) {
                     let newUser = {
                         _id: UserDetails.id,
+                        firstname: UserDetails.firstname,
+                        lastname:UserDetails.lastname,
                         username: UserDetails.id,
                         email: UserDetails.email,
                         hashedPassword: UserDetails.hashedPassword
@@ -55,7 +60,7 @@ let exportedMethods = {
                                 _id: newId,
                                 categories: cat
                             };
-                            return catCol.insertOne(newCat).then((newInsertInformation) => {
+                            return catCol.insertOne(userCat).then((newInsertInformation) => {
                                 return newInsertInformation.insertedId;
                             });
                         });
@@ -83,10 +88,10 @@ let exportedMethods = {
         return users().then((userCollection) => {
             return this.getUserById(id).then((currentUser) => {
                 let updatedUser = {
-                    username: UpdatedInfo.username,
-                    email: UpdatedInfo.email,
-                    hashedPassword: UpdatedInfo.hashedPassword,
-                    categories: UpdatedInfo.categories
+                    firstname: UpdatedInfo.firstname,
+                    lastname: UpdatedInfo.lastname,
+                    email: UpdatedInfo.email, 
+                    hashedPassword: UpdatedInfo.hashedPassword
                 };
 
                 let updateCommand = {

@@ -85,11 +85,13 @@
                                 <div class="form-group">
                                     <input type="text" name="username" id="username" tabindex="1"
                                            class="form-control"
-                                           placeholder="Username" aria-label="Username"  value="">
+                                           placeholder="Username" aria-label="Username"  value="" required>
+                                           <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" name="password" id="password" tabindex="2"
-                                           class="form-control" aria-label="Password" placeholder="Password">
+                                           class="form-control" aria-label="Password" placeholder="Password" required>
+                                           <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group text-center hidden">
                                     <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
@@ -136,30 +138,36 @@
                                 <div class="form-group">
                                     <input type="text" name="firstname" id="firstname" tabindex="1"
                                            class="form-control"
-                                           placeholder="First Name" aria-label="First Name" value="{{firstname}}">
+                                           placeholder="First Name" aria-label="First Name" value="{{firstname}}" required>
+                                           <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" name="lastname" id="lastname" tabindex="2"
                                            class="form-control"
-                                           placeholder="Last Name" aria-label="Last Name" value="{{lastname}}">
+                                           placeholder="Last Name" aria-label="Last Name" value="{{lastname}}" required>
+                                           <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" name="username" id="username" tabindex="3"
                                            class="form-control"
-                                           placeholder="Username" aria-label="Username" value="{{username}}">
+                                           placeholder="Username" aria-label="Username" value="{{username}}" required>
+                                           <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
                                     <input type="email" name="email" id="email" tabindex="4" class="form-control"
-                                           placeholder="Email Address" aria-label="Email Address" value="{{email}}">
+                                           placeholder="Email Address" aria-label="Email Address" value="{{email}}" required>
+                                           <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" id="password" tabindex="5"
-                                           class="form-control" placeholder="Password" aria-label="Password" value="{{password}}">
+                                    <input type="password" name="password" id="inputpassword" tabindex="5"
+                                           class="form-control" data-minlength="6" placeholder="Password" aria-label="Password" value="{{password}}" required>
+                                           <div class="help-block">Minimum of 6 characters</div>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" name="confirmPassword" id="confirmPassword"
                                            tabindex="6"
-                                           class="form-control" aria-label="Confirm Password" placeholder="Confirm Password">
+                                           class="form-control" aria-label="Confirm Password" placeholder="Confirm Password" data-match="#inputpassword" required>
+                                           <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
@@ -179,4 +187,5 @@
         </div>
     </div>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
 <script src="/public/javascripts/login.js"></script>

@@ -13,7 +13,7 @@ budget.getBudgetForMonth("test", 5, 2017).then(b=>{
 budget.getAllBudget().then(b=>{
    b.forEach(x=>console.log(JSON.stringify(x,null,4)));
 });
-
+users.removeUser("psharm8");
 // users.getAllUsers().then(u=>{
 //     u.forEach(x=>users.removeUser(x._id));
 // });
