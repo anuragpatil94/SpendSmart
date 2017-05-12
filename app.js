@@ -10,7 +10,7 @@ const favicon=require("serve-favicon");
 const handlebars = require('handlebars');
 const expressValidator = require('express-validator');
 const path=require("path");
-
+const cookieParser = require('cookie-parser');
 const handlebarsInstance = exphbs.create({
     defaultLayout: 'main',
     // Specify helpers which are only registered on this instance.
@@ -45,6 +45,7 @@ app.use(require('morgan')('dev'));
 app.use(favicon(path.join(__dirname, 'public','images', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(require('express-session')({secret: 'keyboard cat'}));
 app.use(rewriteUnsupportedBrowserMethods);
 

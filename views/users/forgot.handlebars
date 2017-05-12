@@ -1,8 +1,65 @@
-<div class="form-group">
-    <form method="post">
-        <label for="email">
-            <input type="text" name="email" autofocus>
-        </label>
-        <button type="submit" class="btn-primary">Reset Password</button>
-    </form>
+<header class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index">Spend Smart</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="disabled"><a href="#">Dashboard</a></li>
+                    <li class="disabled"><a href="#">Budget</a></li>
+                    <li class="disabled"><a href="#">Expenses</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</header>
+<div class="container main-padding main-min-height">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form class="form-horizontal" id="forgot-form" method="POST" action="/forgot" role="form">
+                {{#if error }}
+                <div class="form-group">
+                    <div class="col-lg-8 col-lg-offset-3 alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{ error }}
+                    </div>
+                </div>
+                {{/if}}
+                {{#if info }}
+                <div class="form-group">
+                    <div class="col-lg-8 col-lg-offset-3 alert alert-info alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{ info }}
+                    </div>
+                </div>
+                {{/if}}
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="email">Email</label>
+                    <div class="col-lg-8">
+                        <input id="email" name="email" class="form-control" type="email" value="{{user.email}}" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+                        <input type="submit" class="btn btn-primary" value="Reset Password">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+<script src="/public/javascripts/forgot.js"></script>

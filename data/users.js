@@ -6,15 +6,29 @@ let exportedMethods = {
     defaultCategories() {
         return ["Bills and Utilities", "Education", "Entertainment", "Family", "Fees and Charges", "Food and Beverage", "Gifts and Donations", "Health and Fitness", "Insurances", "Investment", "Shopping", "Transportation", "Travels", "General"];
     },
-    // This is a fun new syntax that was brought forth in ES6, where we can define
-    // methods on an object with this shorthand!
+    getUserByEmail(email) {
+        return users().then((userCollection) => {
+            return userCollection.findOne({
+                email: email
+            }).then((user) => {
+                //if (!user) throw "User not found";
+                if (!user.fullname) {
+                    user.fullname = user.firstname + " " + user.lastname;
+                }
+
+                return user;
+            });
+        });
+    },
     getUserById(id) {
         return users().then((userCollection) => {
-            return userCollection.findOne({ _id: id }).then((user) => {
+            return userCollection.findOne({
+                _id: id
+            }).then((user) => {
                 //if (!user) throw "User not found";
-                if(!user.fullname){
-                    user.fullname = user.firstname + " "+user.lastname;                    
-                }              
+                if (!user.fullname) {
+                    user.fullname = user.firstname + " " + user.lastname;
+                }
 
                 return user;
             });
@@ -29,7 +43,9 @@ let exportedMethods = {
     },
     getUserCategories(userId) {
         return categories().then(catCol => {
-            return catCol.findOne({ _id: userId }).then(c => {
+            return catCol.findOne({
+                _id: userId
+            }).then(c => {
                 if (!c) {
                     return this.defaultCategories();
                 }
@@ -40,12 +56,14 @@ let exportedMethods = {
     },
     addUser(UserDetails) {
         return users().then((userCollection) => {
-            return userCollection.findOne({ _id: UserDetails.id }).then(u => {
+            return userCollection.findOne({
+                _id: UserDetails.id
+            }).then(u => {
                 if (!u) {
                     let newUser = {
                         _id: UserDetails.id,
                         firstname: UserDetails.firstname,
-                        lastname:UserDetails.lastname,
+                        lastname: UserDetails.lastname,
                         username: UserDetails.id,
                         email: UserDetails.email,
                         hashedPassword: UserDetails.hashedPassword
@@ -55,7 +73,7 @@ let exportedMethods = {
                         return newInsertInformation.insertedId;
                     }).then((newId) => {
                         return categories().then(catCol => {
-                            let cat = this.defaultCategories();                            
+                            let cat = this.defaultCategories();
                             let userCat = {
                                 _id: newId,
                                 categories: cat
@@ -75,7 +93,9 @@ let exportedMethods = {
     },
     removeUser(id) {
         return users().then((userCollection) => {
-            return userCollection.removeOne({ _id: id }).then((deletionInfo) => {
+            return userCollection.removeOne({
+                _id: id
+            }).then((deletionInfo) => {
                 if (deletionInfo.deletedCount === 0)
                     throw (`Could not delete user with id of ${id}`);
                 else
@@ -83,22 +103,55 @@ let exportedMethods = {
             });
         });
     },
-
-    updateUser(id, UpdatedInfo) {
+    updatePasswordResetInfo(id, resetInfo) {
         return users().then((userCollection) => {
             return this.getUserById(id).then((currentUser) => {
                 let updatedUser = {
-                    firstname: UpdatedInfo.firstname,
-                    lastname: UpdatedInfo.lastname,
-                    email: UpdatedInfo.email, 
-                    hashedPassword: UpdatedInfo.hashedPassword
+                    resetPasswordToken: resetInfo.resetPasswordToken,
+                    resetPasswordExpires: resetInfo.resetPasswordExpires
                 };
 
                 let updateCommand = {
                     $set: updatedUser
                 };
 
-                return userCollection.updateOne({ _id: id }, updateCommand).then(() => {
+                return userCollection.updateOne({
+                    _id: id
+                }, updateCommand).then(() => {
+                    return this.getUserById(id);
+                });
+            });
+        });
+    },
+    findByToken(token) {
+        return users().then((userCollection) => {
+            return userCollection.findOne({
+                resetPasswordToken: token,
+                resetPasswordExpires: {
+                    $gt: Date.now()
+                }
+            });
+        });
+    },
+    updateUser(id, UpdatedInfo) {
+        return users().then((userCollection) => {
+            return this.getUserById(id).then((currentUser) => {
+                let updatedUser = {
+                    firstname: UpdatedInfo.firstname,
+                    lastname: UpdatedInfo.lastname,
+                    email: UpdatedInfo.email,
+                    hashedPassword: UpdatedInfo.hashedPassword,
+                    resetPasswordToken: UpdatedInfo.resetPasswordToken,
+                    resetPasswordExpires: UpdatedInfo.resetPasswordExpires
+                };
+
+                let updateCommand = {
+                    $set: updatedUser
+                };
+
+                return userCollection.updateOne({
+                    _id: id
+                }, updateCommand).then(() => {
                     return this.getUserById(id);
                 });
             });

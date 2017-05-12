@@ -1,0 +1,3 @@
+$(function () {
+    $("#forgot-form").validator();
+});
