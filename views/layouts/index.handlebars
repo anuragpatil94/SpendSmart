@@ -16,7 +16,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Dashboard <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="/index">Dashboard <span class="sr-only">(current)</span></a></li>
                     <li><a href="/budget">Budget</a></li>
                     <li><a href="/expenses">Expenses</a></li>
                 </ul>
@@ -37,13 +37,28 @@
         </div><!-- /.container-fluid -->
     </nav>
 </header>
-<main class="container main-padding">
-    <div class="jumbotron">
+<main class="container main-padding main-min-height">
+    <input type="hidden" value='{{asJSON data}}' id="data"></input>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div id="budget_div">Please wait...</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+        <div id="daily_div">Please wait...</div>
+        </div>
+        <div class="col-md-6">
+        <div id="monthly_div">Please wait...</div>
+        </div>
+    </div>  
+    {{!--<div class="jumbotron">
         <h1>Coming Soon</h1>
         <p>This page is going to be awesome. It will contain list of expenses, shares, charts and much more.</p>
         <p>Stay Tuned!</p>
         <p><a class="btn btn-primary btn-lg" target="_blank" href="https://github.com/psharm8/SpendSmart" role="button">GitHub</a>
         </p>
-    </div>
+    </div>--}}
 </main>
-<script src="/public/javascripts/index.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/public/javascripts/dashboard.js"></script>

@@ -17,8 +17,8 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/index">Dashboard</a></li>
-                    <li class="active"><a href="/budget">Budget<span class="sr-only">(current)</span></a></li>
-                    <li><a href="/expenses">Expenses</a></li>
+                    <li><a href="/budget">Budget</a></li>
+                    <li class="active"><a href="/expenses">Expenses<span class="sr-only">(current)</span></a></li>
 
                 </ul>
 
@@ -40,50 +40,57 @@
         <!-- /.container-fluid -->
 
     </nav>
-
 </header>
-<h1></h1><h2></h2>
 <div class="container main-padding main-min-height">
     <div class="row">
         <div class="col-md-3" role="complementary">
             <nav class="bs-docs-sidebar affix">
                 <ul class="nav bs-docs-sidenav">
-                    <li><a href="#addBudget" data-toggle="modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add/Update Budget</a></li>
-                    <li><a href="/budget/{{previous}}" id="previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous Month</a></li>
-                    <li><a href="/budget/{{next}}" id="next">Next Month <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+                    <li><a href="#addExpense" data-toggle="modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Expense</a></li>
+                    <li><a href="/expenses/{{previous}}" id="previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous Month</a></li>
+                    <li><a href="/expenses/{{next}}" id="next">Next Month <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
                 </ul>
             </nav>
         </div>
-        {{#if budget}}
-        <input type="hidden" value='{{asJSON budget}}' id="budget"></input>
+         {{#if groups}}
         <div class="col-md-6" role="main">
-            <h1 class="text-center">Budget Breakup</h1>
-            <div id="chart_div"></div>
+            {{#each groups}} {{> date-group }} {{/each}}
         </div>
         {{else}}
         <div class="col-md-6" role="main">
             <div class="jumbotron">
-                <h1>Add a budget</h1>
-                <p>Allocate some money to various categories.</p>
-                <p>See how much you spend against each category.</p>
+                <h1>Add expenses</h1>
+                <p>Add the money you spent.</p>
+                <p>Watch how much you spent against each category.</p>
             </div>
         </div>
         {{/if}}
+        
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar affix">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="h3 panel-title">Total Expenses</div>
+                    </div>
+                    <div class="panel-body text-center">
+                        $ {{total}}
+                    </div>
+                </div>
+            </nav>
+        </div>
     </div>
-
 </div>
-
-<div id="addBudget" class="modal fade" role="dialog">
+<div id="addExpense" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add a new Budget</h4>
+                <div class="h4 modal-title text-center">Add a new expense</div>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="budget-form" action="/budget" method="post" role="form" style="display: block;">
+                <form class="form-horizontal" id="expense-form" action="/expenses" method="post" role="form" style="display: block;">
                     {{#if error }}
                     <div class="form-group">
                         <div class="alert alert-danger alert-dismissable">
@@ -92,10 +99,10 @@
                     </div>
                     {{/if}}
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="monthYear">Month:</label>
-                        <div class="col-sm-4">
+                        <label class="control-label col-sm-3" for="date">Date:</label>
+                        <div class="col-sm-5">
                             <div class="input-group date">
-                                <input type="text" id="monthYear" name="monthYear" class="form-control">
+                                <input type="text" readonly="readonly" id="date" name="date" class="form-control">
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
@@ -103,32 +110,55 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="category">Category:</label>
-                        <div class="col-sm-4">
+                        <label class="control-label col-sm-3" for="category">Category:</label>
+                        <div class="col-sm-5">
                             <select class="form-control" name="category" id="category">
-                                 {{#each categories}} 
-                                 <option value="{{this}}">{{this}}</option> 
-                                 {{/each}}
+                                {{#each categories}}
+                                <option value='{{this}}'>{{this}}</option>
+                                {{/each}}
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="amount">Amount:</label>
-                        <div class="col-sm-4">
+                        <label class="control-label col-sm-3" for="amount">Amount:</label>
+                        <div class="col-sm-5">
                             <input type="number" min="0" name="amount" id="amount" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="note">Note:</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="note" id="note" class="form-control">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <a id="submit" class="btn btn-success btn-ok">Add</a>
             </div>
         </div>
 
     </div>
 </div>
-<script src="/public/javascripts/index.js"></script>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <div class="h4 modal-title" id="myModalLabel">Confirm Delete</div>
+            </div>
+            <div class="modal-body">
+                <p>You are about to delete this expense, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+            </div>
+            <form id="delete-form" method="POST" class="hidden"></form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/public/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="/public/javascripts/budget.js"></script>
+<script src="/public/javascripts/expenses.js"></script>

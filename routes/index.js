@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt-nodejs");
 const txRoutes = require("./transactions");
 const budgetRoutes = require("./budget");
 const profileRoutes = require("./profile");
+const dashboard = require("../data/index").getDashboardData;
 const crypto = require("crypto");
 const helper = require('sendgrid').mail;
 const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
@@ -74,9 +75,13 @@ let exportedMethods = {
                 res.redirect("/login");
                 return;
             }
-            res.render("layouts/index", {
-                user: req.user
+           
+           dashboard(req.user._id).then(d=>{
+               res.render("layouts/index", {
+                user: req.user,
+                data:d
             });
+           });            
         });
 
 

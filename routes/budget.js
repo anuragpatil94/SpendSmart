@@ -13,7 +13,7 @@ router.get('/:month/:year', function (req, res) {
                 last.setMonth(last.getMonth() - 1);
                 let next = new Date(thisMonth);
                 next.setMonth(next.getMonth() + 1);
-                res.render("budget/budget", {
+                res.render("layouts/budget", {
                     user: req.user,
                     budget: b,
                     categories: cat,

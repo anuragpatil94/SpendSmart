@@ -10,7 +10,15 @@ let exportedMethods = {
             return budgetCollection.find({}).toArray();
         });
     },
-
+    getRecent(userId){
+         return budget().then((budgetCollection) => {
+            let past=new Date();            
+            past.setMonth(past.getMonth()-3);
+            return budgetCollection
+                .find({"userId": userId, "month": { $gt: past.getMonth()+1 },"year": { $gte: past.getFullYear() }})
+                .toArray();
+        });
+    },
     getBudgetById(id) {
         return budget().then((budgetCollection) => {
             return budgetCollection
