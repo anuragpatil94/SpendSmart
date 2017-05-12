@@ -6,14 +6,15 @@ const Enumerable = require("linq");
 const budget=require("../data/budget");
 const mongoCollections = require("../config/mongoCollections");
 
-budget.getBudgetForMonth("test", 5, 2017).then(b=>{
-    b.forEach(x=>console.log(JSON.stringify(x,null,4)));
-});
+// budget.getBudgetForMonth("test", 5, 2017).then(b=>{
+//     b.forEach(x=>console.log(JSON.stringify(x,null,4)));
+// });
 
-budget.getAllBudget().then(b=>{
-   b.forEach(x=>console.log(JSON.stringify(x,null,4)));
-});
-users.removeUser("psharm8");
+// transactions.getAllBills().then(b=>{
+//    b.forEach(x=>console.log(JSON.stringify(x.date.full.toDateString(),null,4)));
+// });
+let d = new Date(2017,4);
+console.log(d.toDateString());
 // users.getAllUsers().then(u=>{
 //     u.forEach(x=>users.removeUser(x._id));
 // });

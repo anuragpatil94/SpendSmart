@@ -22,30 +22,12 @@ let exportedMethods = {
                 });
         });
     },
-
-    getBillByUserId(id) {
-        return bill().then((billCollection) => {
-            return billCollection
-                .find({"user.userId": id})
-                .toArray();
-        }).then(a=>{
-            return a.map(x=>{
-                x.date.fullMonth = x.date.full.toLocaleString("en-US", {month:"long"});
-                return x;
-            });
-        });
-    },
-
+   
     getBillByMonth(userId, month, year) {
         return bill().then((billCollection) => {
             return billCollection
                 .find({"user.userId": userId, "date.month": month, "date.year": year})
                 .toArray();
-        }).then(a=>{
-            return a.map(x=>{
-                x.date.fullMonth = x.date.full.toLocaleString("en-US", {month:"long"});
-                return x;
-            });
         });
     },
 
@@ -60,7 +42,16 @@ let exportedMethods = {
         });
     },
 
-    //category and date could get from select on webpage
+    getRecent(userId){
+         return bill().then((billCollection) => {
+            let past=new Date();            
+            past.setMonth(past.getMonth()-3);
+            return billCollection
+                .find({"user.userId": userId, "date.full": { $gt: past }})
+                .toArray();
+        });
+    },
+
     addBill(category, amount, date, note, userID) {
         if (typeof amount !== "number")
             return Promise.reject("Must provide a number");

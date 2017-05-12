@@ -38,7 +38,7 @@ router.get("/:month/:year", (req, res) => {
                 last.setMonth(last.getMonth() - 1);
                 let next = new Date(thisMonth);
                 next.setMonth(next.getMonth() + 1);
-                res.render("expenses/expenses", {
+                res.render("layouts/expenses", {
                     user: req.user,
                     groups: g,
                     total: total,
@@ -49,7 +49,7 @@ router.get("/:month/:year", (req, res) => {
             });
 
         }, e => {
-            res.status(404).render("expenses/expenses", {
+            res.status(404).render("layouts/expenses", {
                 error: e
             });
         });
