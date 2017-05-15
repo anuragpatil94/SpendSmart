@@ -98,8 +98,15 @@ let exportedMethods = {
             }).then((deletionInfo) => {
                 if (deletionInfo.deletedCount === 0)
                     throw (`Could not delete user with id of ${id}`);
-                else
-                    return (`Deleted user ${id} successfully`);
+                else {
+                    return categories().then(catCol => {
+                        return catCol.removeOne({
+                            _id: id
+                        }).then(d => {
+                            return (`Deleted user ${id} successfully`);
+                        });
+                    });
+                }
             });
         });
     },
