@@ -216,10 +216,13 @@ let exportedMethods = {
                                 if (error) {
                                     req.flash('error', 'Failed to send email.');
                                 }
-                                req.flash('info', 'An e-mail has been sent to ' + u.email + ' with further instructions.');
+                               else{
+                                    req.flash('info', 'An e-mail has been sent to ' + u.email + ' with further instructions.');
+                               }
+                                res.redirect("/forgot");
                             });
 
-                            res.redirect("/forgot");
+                           
                         });
                 });
         });
