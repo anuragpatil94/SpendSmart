@@ -49,7 +49,7 @@ let exportedMethods = {
                 if (!c) {
                     return this.defaultCategories();
                 }
-                return c;
+                return c.categories;
             });
         });
 
