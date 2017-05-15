@@ -32,7 +32,7 @@ router.get("/:month/:year", (req, res) => {
                         bills: a.toArray(),
                         total: a.sum(q=>q.amount)
                     };
-                }).toArray();
+                }).orderBy(x => x.date).toArray();
                 let total = 0;
                 total = g.reduce((p,cu)=>p+cu.total, total);
             return users.getUserCategories(req.user.username).then(c => {
