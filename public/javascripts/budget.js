@@ -1,8 +1,5 @@
 $(function () {
-    $("#submit").click(function (e) {
-        e.preventDefault();
-        $("#budget-form").submit();
-    });
+    $("#budget-form").validator();
     $('.input-group.date').datepicker({
         autoclose: true,
         format: "mm/yyyy",
@@ -30,7 +27,10 @@ $(function () {
             'titlePosition': 'none',
             'is3D': 'true',
             'height': '400',
-            'legend':{'position':'top', 'maxLines':'3'}
+            'legend': {
+                'position': 'top',
+                'maxLines': '3'
+            }
         };
 
         // Instantiate and draw our chart, passing in some options.

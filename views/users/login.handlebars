@@ -52,9 +52,9 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 {{#if register }}
-                                <form id="login-form" method="post" role="form" style="display: none;">
+                                <form id="login-form" method="post" action="/login" style="display: none;">
                                 {{else}}
-                                <form id="login-form" method="post" role="form" style="display: block;">
+                                <form id="login-form" method="post" action="/login" style="display: block;">
                                 {{/if}}
                                 {{#if error }}
                                     {{#if register }}
@@ -103,10 +103,10 @@
                                 </div>
                             </form>
                                 {{#if register }}
-                                <form id="register-form" method="post" action="/register" role="form"
+                                <form id="register-form" method="post" action="/register" 
                                       style="display: block;">
                                 {{else}}
-                                <form id="register-form" method="post" action="/register" role="form"
+                                <form id="register-form" method="post" action="/register"
                                       style="display: none;">
                                 {{/if}}
 

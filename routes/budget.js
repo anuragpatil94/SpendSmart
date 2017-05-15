@@ -5,6 +5,9 @@ const users = require("../data/users");
 
 
 router.get('/:month/:year', function (req, res) {
+    if(isNaN(req.params.month) || isNaN(req.params.year)){
+        return res.redirect("/budget");
+    }
     budget.getBudgetForMonth(req.user.username,parseInt(req.params.month)-1, parseInt(req.params.year))
         .then(b => {
             return users.getUserCategories(req.user.username).then(cat => {

@@ -14,6 +14,9 @@ router.post("/", (req, res) => {
         });
 });
 router.get("/:month/:year", (req, res) => {
+    if(isNaN(req.params.month) || isNaN(req.params.year)){
+        return res.redirect("/expenses");        
+    }
     bills.getBillByMonth(req.user.username, req.params.month - 1, parseInt(req.params.year))
         .then(b => {
             let g = Enumerable.from(b)
