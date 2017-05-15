@@ -23,8 +23,6 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <form action="/logout" method="POST" id="logout">
-                    </form>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.fullname}} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -55,33 +53,33 @@
             </nav>
         </div>
         {{#if budget}}
-        <input type="hidden" value='{{asJSON budget}}' id="budget"></input>        
+        <input type="hidden" value='{{asJSON budget}}' id="budget">
         <div class="col-md-10" role="main">
             <div class="row">
-            <div class="h1 col-md-10 text-center">Budget Breakup</div>
+                <div class="h1 col-md-10 text-center">Budget Breakup</div>
             </div>
             <div class="row">
-            <div class="col-md-4">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each budget}}
-                        <tr>
-                            <td>{{category}}</td>
-                            <td>${{amount}}</td>
-                        </tr>    
-                        {{/each}}                    
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6">
-            <div id="chart_div">Please wait...</div>
-            </div>
+                <div class="col-md-4">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each budget}}
+                            <tr>
+                                <td>{{category}}</td>
+                                <td>${{amount}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <div id="chart_div">Please wait...</div>
+                </div>
             </div>
         </div>
         {{else}}
@@ -104,10 +102,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h4 modal-title">Add a new Budget</div>
+                <div class="h4 modal-title text-center">Add a new Budget</div>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="budget-form" action="/budget" method="post" role="form" style="display: block;">
+                <form class="form-horizontal" id="budget-form" action="/budget" method="post" style="display: block;">
                     {{#if error }}
                     <div class="form-group">
                         <div class="alert alert-danger alert-dismissable">
@@ -119,10 +117,11 @@
                         <label class="control-label col-sm-2" for="monthYear">Month:</label>
                         <div class="col-sm-4">
                             <div class="input-group date">
-                                <input type="text" id="monthYear" name="monthYear" class="form-control">
+                                <input type="text" id="monthYear" name="monthYear" class="form-control" readonly required>
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
+                                <div class="help-block with-errors"></div>
                             </div>
                         </div>
                     </div>
@@ -139,19 +138,20 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="amount">Amount:</label>
                         <div class="col-sm-4">
-                            <input type="number" min="0" name="amount" id="amount" class="form-control">
+                            <input type="number" min="0" step="0.01" name="amount" id="amount" class="form-control" required>
                         </div>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" id="submit" class="btn btn-success btn-submit" value="Add">
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a id="submit" class="btn btn-success btn-ok">Add</a>
-            </div>
         </div>
-
     </div>
 </div>
 <script src="/public/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
 <script src="/public/javascripts/budget.js"></script>
