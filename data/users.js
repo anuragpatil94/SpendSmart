@@ -11,8 +11,8 @@ let exportedMethods = {
             return userCollection.findOne({
                 email: email
             }).then((user) => {
-                //if (!user) throw "User not found";
-                if (!user.fullname) {
+               
+                if (user && !user.fullname) {
                     user.fullname = user.firstname + " " + user.lastname;
                 }
 
@@ -26,7 +26,7 @@ let exportedMethods = {
                 _id: id
             }).then((user) => {
                 //if (!user) throw "User not found";
-                if (!user.fullname) {
+                if (user && !user.fullname) {
                     user.fullname = user.firstname + " " + user.lastname;
                 }
 
@@ -57,38 +57,43 @@ let exportedMethods = {
     addUser(UserDetails) {
         return users().then((userCollection) => {
             return userCollection.findOne({
-                _id: UserDetails.id
-            }).then(u => {
-                if (!u) {
-                    let newUser = {
-                        _id: UserDetails.id,
-                        firstname: UserDetails.firstname,
-                        lastname: UserDetails.lastname,
-                        username: UserDetails.id,
-                        email: UserDetails.email,
-                        hashedPassword: UserDetails.hashedPassword
-                    };
+                    $or: [{
+                        _id: UserDetails.id
+                    }, {
+                        email: UserDetails.email
+                    }]
+                })
+                .then(u => {
+                    if (!u) {
+                        let newUser = {
+                            _id: UserDetails.id,
+                            firstname: UserDetails.firstname,
+                            lastname: UserDetails.lastname,
+                            username: UserDetails.id,
+                            email: UserDetails.email,
+                            hashedPassword: UserDetails.hashedPassword
+                        };
 
-                    return userCollection.insertOne(newUser).then((newInsertInformation) => {
-                        return newInsertInformation.insertedId;
-                    }).then((newId) => {
-                        return categories().then(catCol => {
-                            let cat = this.defaultCategories();
-                            let userCat = {
-                                _id: newId,
-                                categories: cat
-                            };
-                            return catCol.insertOne(userCat).then((newInsertInformation) => {
-                                return newInsertInformation.insertedId;
+                        return userCollection.insertOne(newUser).then((newInsertInformation) => {
+                            return newInsertInformation.insertedId;
+                        }).then((newId) => {
+                            return categories().then(catCol => {
+                                let cat = this.defaultCategories();
+                                let userCat = {
+                                    _id: newId,
+                                    categories: cat
+                                };
+                                return catCol.insertOne(userCat).then((newInsertInformation) => {
+                                    return newInsertInformation.insertedId;
+                                });
                             });
+                        }).then((newId) => {
+                            return this.getUserById(newId);
                         });
-                    }).then((newId) => {
-                        return this.getUserById(newId);
-                    });
-                } else {
-                    throw "User with same Username already exists.";
-                }
-            });
+                    } else {
+                        throw "User with same Username or email already exists.";
+                    }
+                });
         });
     },
     removeUser(id) {
@@ -143,23 +148,29 @@ let exportedMethods = {
     updateUser(id, UpdatedInfo) {
         return users().then((userCollection) => {
             return this.getUserById(id).then((currentUser) => {
-                let updatedUser = {
-                    firstname: UpdatedInfo.firstname,
-                    lastname: UpdatedInfo.lastname,
-                    email: UpdatedInfo.email,
-                    hashedPassword: UpdatedInfo.hashedPassword,
-                    resetPasswordToken: UpdatedInfo.resetPasswordToken,
-                    resetPasswordExpires: UpdatedInfo.resetPasswordExpires
-                };
+                return this.getUserByEmail(UpdatedInfo.email).then(ue => {
+                    if (ue && currentUser._id !== ue._id) {
+                        throw "Email is already in use.";
+                    }
 
-                let updateCommand = {
-                    $set: updatedUser
-                };
+                    let updatedUser = {
+                        firstname: UpdatedInfo.firstname,
+                        lastname: UpdatedInfo.lastname,
+                        email: UpdatedInfo.email,
+                        hashedPassword: UpdatedInfo.hashedPassword,
+                        resetPasswordToken: UpdatedInfo.resetPasswordToken,
+                        resetPasswordExpires: UpdatedInfo.resetPasswordExpires
+                    };
 
-                return userCollection.updateOne({
-                    _id: id
-                }, updateCommand).then(() => {
-                    return this.getUserById(id);
+                    let updateCommand = {
+                        $set: updatedUser
+                    };
+
+                    return userCollection.updateOne({
+                        _id: id
+                    }, updateCommand).then(() => {
+                        return this.getUserById(id);
+                    });
                 });
             });
         });
