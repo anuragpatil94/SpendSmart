@@ -51,15 +51,14 @@ module.exports = {
                                     if (byCategory[bill.category]) {
                                         byCategory[bill.category][1] = bill.amount;
                                     } else {
-                                        byCategory[bill.category] = [0, cat.amount];
+                                        byCategory[bill.category] = [0, bill.amount];
                                     }
-                                    
-                                   
                                 }
-                                for(let k in byCategory){
-                                    r.budget.push([k,byCategory[k][0],byCategory[k][1]]);
+                                for (let k in byCategory) {
+                                    r.budget.push([k, byCategory[k][0], byCategory[k][1]]);
                                 }
-                               return r;
+                                r.hasCurrent = r.budget.length > 1;
+                                return r;
                             });
                     });
             });

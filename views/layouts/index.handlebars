@@ -3,8 +3,8 @@
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -24,8 +24,7 @@
                     <form action="/logout" method="POST" id="logout">
                     </form>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">{{user.fullname}} <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.fullname}} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/profile">Profile</a></li>
                             <li role="separator" class="divider"></li>
@@ -33,26 +32,39 @@
                         </ul>
                     </li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
     </nav>
 </header>
 <main class="container main-padding main-min-height">
     <input type="hidden" value='{{asJSON data}}' id="data"></input>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
+            {{#if data.hasCurrent}}
             <div id="budget_div">Please wait...</div>
+            {{else}}
+            <div class="jumbotron">
+                <h1>No data for current month</h1>
+                <p>Add some exepenses and budget for current month to see expense vs budget.</p>
+                <p><a class="btn btn-primary btn-lg" href="/expenses" role="button">Add Expenses</a>
+                <a class="btn btn-primary btn-lg" href="/budget" role="button">Add Budget</a>
+                </p>
+            </div>
+            {{/if}}
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-        <div id="daily_div">Please wait...</div>
+            <div id="daily_div">Please wait...</div>
         </div>
         <div class="col-md-6">
-        <div id="monthly_div">Please wait...</div>
+            <div id="monthly_div">Please wait...</div>
         </div>
-    </div>  
-    {{!--<div class="jumbotron">
+    </div>
+    {{!--
+    <div class="jumbotron">
         <h1>Coming Soon</h1>
         <p>This page is going to be awesome. It will contain list of expenses, shares, charts and much more.</p>
         <p>Stay Tuned!</p>

@@ -1,9 +1,10 @@
 $(function () {
     $("#submit").click(function (e) {
-        e.preventDefault();
-        $("#expense-form").submit();
+        // e.preventDefault();
+        // $("#expense-form").submit();
         console.log("form submit");
     });
+    $("#expense-form").validator();
     $('.input-group.date').datepicker({
         todayBtn: "linked",
         autoclose: true,

@@ -8,33 +8,36 @@ $(function () {
     function drawChart() {
         var dash = JSON.parse($("#data").val());
         // Create the data table.
+        
+        if (dash.hasCurrent) {
+            var budget = new google.visualization.arrayToDataTable(dash.budget);
 
-        var budget = new google.visualization.arrayToDataTable(dash.budget);
+            var budgetOptions = {
+                title: 'Budget vs Spent by Category',
+                chartArea: {
+                    width: '50%'
+                },
+                hAxis: {
+                    title: 'Amount',
+                    minValue: 0,
+                },
+                vAxis: {
+                    title: 'Category'
+                },
+                height: 350
+            };
 
-        var budgetOptions = {
-            title: 'Budget vs Spent by Category',
-            chartArea: {
-                width: '50%'
-            },
-            hAxis: {
-                title: 'Amount',
-                minValue: 0,
-            },
-            vAxis: {
-                title: 'Category'
-            },
-            height: 350
-        };
+            var budgetChart = new google.visualization.BarChart(document.getElementById('budget_div'));
+            budgetChart.draw(budget, budgetOptions);
+        }
 
-        var budgetChart = new google.visualization.BarChart(document.getElementById('budget_div'));
-        budgetChart.draw(budget, budgetOptions);
 
         var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Date');
+        data.addColumn('string', 'Date');
         data.addColumn('number', 'Amount');
         for (var x = 0; x < dash.billsByDate.length; x++) {
             var date = new Date(dash.billsByDate[x].date);
-            data.addRow([date, dash.billsByDate[x].amount]);
+            data.addRow([date.toDateString(), dash.billsByDate[x].amount]);
         }
 
         // Set chart options
