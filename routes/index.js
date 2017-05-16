@@ -8,7 +8,7 @@ const profileRoutes = require("./profile");
 const dashboard = require("../data/index").getDashboardData;
 const crypto = require("crypto");
 const helper = require('sendgrid').mail;
-const sg = require('sendgrid')('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');
+const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 
 let exportedMethods = {
     configRoutes(app) {
